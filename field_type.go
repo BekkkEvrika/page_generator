@@ -195,7 +195,11 @@ func (f *FieldType) setPgType(tp string) error {
 			f.PgType = types[3]
 			f.pgDataType = "number"
 		case text:
-			f.PgType = types[2]
+			if f.getGormSize() > 20 {
+				f.PgType = types[7]
+			} else {
+				f.PgType = types[2]
+			}
 			f.pgDataType = "string"
 		case date:
 			if f.getGormType() == "date" {
