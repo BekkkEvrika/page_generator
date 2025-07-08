@@ -13,6 +13,7 @@ const (
 	slice     = 2
 	date      = 3
 	structure = 4
+	boolean   = 5
 	fTrue     = "true"
 	fFalse    = "false"
 )
@@ -202,6 +203,8 @@ func (f *FieldType) setPgType(tp string) error {
 			} else {
 				f.PgType = types[2]
 			}
+		case boolean:
+			f.PgType = types[4]
 		case -1:
 			return fmt.Errorf(" field type not found: %s", f.Name)
 		}

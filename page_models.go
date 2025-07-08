@@ -434,6 +434,8 @@ func checkType(t reflect.Type) int {
 			return date
 		}
 		return structure
+	case reflect.Bool:
+		return boolean
 	default:
 		return -1
 	}
