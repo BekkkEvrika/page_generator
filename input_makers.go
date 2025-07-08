@@ -1,6 +1,6 @@
 package page_generator
 
-import "testPager/page_generator/inputs"
+import "github.com/BekkkEvrika/page_generator/inputs"
 
 var types = []string{"combo-box", "date-time", "text-view", "number-view", "check-box", "label", "search-view", "text-field", "hidden", "auto-complete", "file-uploader"}
 

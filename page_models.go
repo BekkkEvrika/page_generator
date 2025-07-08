@@ -2,11 +2,10 @@ package page_generator
 
 import (
 	"fmt"
+	"github.com/BekkkEvrika/page_generator/inputs"
 	"math"
 	"reflect"
 	"strconv"
-	"testPager/logging/log"
-	"testPager/page_generator/inputs"
 	"time"
 )
 
@@ -309,7 +308,6 @@ func (pm *PageModel) SetTableModel(obj interface{}) error {
 
 func (pm *PageModel) SetModel(obj interface{}, columns int) error {
 	if err := pm.getFieldsModel(obj); err != nil {
-		log.WriteLn(err.Error() + " err")
 		return err
 	}
 	pm.model = obj

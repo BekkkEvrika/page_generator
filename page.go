@@ -1,6 +1,6 @@
 package page_generator
 
-import "testPager/page_generator/inputs"
+import "github.com/BekkkEvrika/page_generator/inputs"
 
 type Page struct {
 	Form      *inputs.FormExported `json:"form"`

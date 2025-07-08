@@ -1,6 +1,6 @@
 package page_generator
 
-import "testPager/page_generator/inputs"
+import "github.com/BekkkEvrika/page_generator/inputs"
 
 type MetaData struct {
 	MetaKey  string
