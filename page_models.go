@@ -388,6 +388,10 @@ func (pm *PageModel) getFieldsModel(obj interface{}) error {
 		ft.Name = field.Name
 		ft.JsonName = field.Tag.Get("json")
 		ft.Gorm = field.Tag.Get("gorm")
+		ft.setPg(field.Tag.Get(pg))
+		if ft.pg == "-" {
+			continue
+		}
 		ft.pgTemplate = field.Tag.Get(pgTemplate)
 		ft.pgSearchSource = field.Tag.Get(pgSearchSource)
 		ft.pgSearchObject = field.Tag.Get(pgSearchObject)
@@ -408,7 +412,6 @@ func (pm *PageModel) getFieldsModel(obj interface{}) error {
 		ft.setPgFormat(field.Tag.Get(pgFormat))
 		ft.setMaxLength(field.Tag.Get(pgMaxLength))
 		ft.setMinLength(field.Tag.Get(pgMinLength))
-		ft.setPg(field.Tag.Get(pg))
 		ft.setPgVisible(field.Tag.Get(pgVisible))
 		pm.modelFieldTypes = append(pm.modelFieldTypes, &ft)
 	}
