@@ -20,20 +20,20 @@ type IExports interface {
 }
 
 type IGetList interface {
-	GetList() error
+	GetList(claims MapClaims) error
 	Filter(obj interface{}) error
 }
 
 type ICreate interface {
-	Create() error
+	Create(claims MapClaims) error
 }
 
 type IUpdate interface {
-	Update() error
+	Update(claims MapClaims) error
 }
 
 type IDelete interface {
-	Delete() error
+	Delete(claims MapClaims) error
 }
 
 type IDefault interface {

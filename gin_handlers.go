@@ -46,6 +46,7 @@ func postFilterDataHandler(pg *PageModel) func(c *gin.Context) {
 
 func postCreateDataHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
+		claims := ExtractClaims(c)
 		crPtr := reflect.New(pg.modelType.Elem()).Interface()
 		if err := c.ShouldBind(crPtr); err != nil {
 			badRequest(c, "Bad request: "+err.Error())
@@ -56,7 +57,7 @@ func postCreateDataHandler(pg *PageModel) func(c *gin.Context) {
 			badRequest(c, "internal error: list does not implement ICreate")
 			return
 		}
-		if err := crObj.Create(); err != nil {
+		if err := crObj.Create(claims); err != nil {
 			internalError(c, "Internal error: "+err.Error())
 			return
 		}
@@ -66,6 +67,7 @@ func postCreateDataHandler(pg *PageModel) func(c *gin.Context) {
 
 func putUpdateDataHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
+		claims := ExtractClaims(c)
 		crPtr := reflect.New(pg.modelType.Elem()).Interface()
 		if err := c.ShouldBind(crPtr); err != nil {
 			badRequest(c, "Bad request: "+err.Error())
@@ -76,7 +78,7 @@ func putUpdateDataHandler(pg *PageModel) func(c *gin.Context) {
 			badRequest(c, "internal error: list does not implement IUpdate")
 			return
 		}
-		if err := crObj.Update(); err != nil {
+		if err := crObj.Update(claims); err != nil {
 			internalError(c, "Internal error: "+err.Error())
 			return
 		}
@@ -86,6 +88,7 @@ func putUpdateDataHandler(pg *PageModel) func(c *gin.Context) {
 
 func deleteDataHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
+		claims := ExtractClaims(c)
 		crPtr := reflect.New(pg.modelType.Elem()).Interface()
 		if err := c.ShouldBind(crPtr); err != nil {
 			badRequest(c, "Bad request: "+err.Error())
@@ -96,7 +99,7 @@ func deleteDataHandler(pg *PageModel) func(c *gin.Context) {
 			badRequest(c, "internal error: list does not implement IDelete")
 			return
 		}
-		if err := crObj.Delete(); err != nil {
+		if err := crObj.Delete(claims); err != nil {
 			internalError(c, "Internal error: "+err.Error())
 			return
 		}
@@ -106,13 +109,14 @@ func deleteDataHandler(pg *PageModel) func(c *gin.Context) {
 
 func getDefaultListHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
+		claims := ExtractClaims(c)
 		listPtr := reflect.New(pg.listType.Elem()).Interface()
 		listInt, ok := listPtr.(IGetList)
 		if !ok {
 			badRequest(c, "internal error: list does not implement Filterable")
 			return
 		}
-		if err := listInt.GetList(); err != nil {
+		if err := listInt.GetList(claims); err != nil {
 			notFound(c, "Not found: "+err.Error())
 			return
 		}
