@@ -17,24 +17,3 @@ func (m Menu) GetName() string {
 type MenuColumn struct {
 	Items []Action `json:"items"`
 }
-
-func (m Menu) Generate(access []string, token string, kid, acKid string) *Menu {
-	menu := Menu{}
-	for _, vls := range m.MenuColumns {
-		clm := MenuColumn{}
-		for _, val := range vls.Items {
-			if !existsAccess(access, val.Access) {
-				continue
-			}
-			val.Access = nil
-			if kid != acKid {
-				if val.Source != "" {
-					val.Source = "/reverse/" + kid + val.Source
-				}
-			}
-			clm.Items = append(clm.Items, val)
-		}
-		menu.MenuColumns = append(menu.MenuColumns, clm)
-	}
-	return &menu
-}
