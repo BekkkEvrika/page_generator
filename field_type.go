@@ -2,9 +2,9 @@ package page_generator
 
 import (
 	"fmt"
+	"github.com/BekkkEvrika/page_generator/inputs"
 	"strconv"
 	"strings"
-	"testPager/page_generator/inputs"
 )
 
 const (

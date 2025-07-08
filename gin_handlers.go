@@ -3,7 +3,6 @@ package page_generator
 import (
 	"github.com/gin-gonic/gin"
 	"reflect"
-	"testPager/logging/log"
 )
 
 func getListPageHandler(pg *PageModel) func(c *gin.Context) {
@@ -29,7 +28,6 @@ func postFilterDataHandler(pg *PageModel) func(c *gin.Context) {
 		filter := reflect.New(pg.filterType).Interface()
 		list := reflect.New(pg.listType.Elem()).Interface()
 		if err := c.ShouldBind(filter); err != nil {
-			log.WriteLn(err.Error())
 			badRequest(c, "Bad request: "+err.Error())
 			return
 		}
@@ -39,7 +37,6 @@ func postFilterDataHandler(pg *PageModel) func(c *gin.Context) {
 			return
 		}
 		if err := listInt.Filter(filter); err != nil {
-			log.WriteLn(err.Error())
 			notFound(c, "Not found: "+err.Error())
 			return
 		}
@@ -51,7 +48,6 @@ func postCreateDataHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		crPtr := reflect.New(pg.modelType.Elem()).Interface()
 		if err := c.ShouldBind(crPtr); err != nil {
-			log.WriteLn(err.Error())
 			badRequest(c, "Bad request: "+err.Error())
 			return
 		}
@@ -61,7 +57,6 @@ func postCreateDataHandler(pg *PageModel) func(c *gin.Context) {
 			return
 		}
 		if err := crObj.Create(); err != nil {
-			log.WriteLn(err.Error())
 			internalError(c, "Internal error: "+err.Error())
 			return
 		}
@@ -73,7 +68,6 @@ func putUpdateDataHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		crPtr := reflect.New(pg.modelType.Elem()).Interface()
 		if err := c.ShouldBind(crPtr); err != nil {
-			log.WriteLn(err.Error())
 			badRequest(c, "Bad request: "+err.Error())
 			return
 		}
@@ -83,7 +77,6 @@ func putUpdateDataHandler(pg *PageModel) func(c *gin.Context) {
 			return
 		}
 		if err := crObj.Update(); err != nil {
-			log.WriteLn(err.Error())
 			internalError(c, "Internal error: "+err.Error())
 			return
 		}
@@ -95,7 +88,6 @@ func deleteDataHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		crPtr := reflect.New(pg.modelType.Elem()).Interface()
 		if err := c.ShouldBind(crPtr); err != nil {
-			log.WriteLn(err.Error())
 			badRequest(c, "Bad request: "+err.Error())
 			return
 		}
@@ -105,7 +97,6 @@ func deleteDataHandler(pg *PageModel) func(c *gin.Context) {
 			return
 		}
 		if err := crObj.Delete(); err != nil {
-			log.WriteLn(err.Error())
 			internalError(c, "Internal error: "+err.Error())
 			return
 		}
@@ -122,7 +113,6 @@ func getDefaultListHandler(pg *PageModel) func(c *gin.Context) {
 			return
 		}
 		if err := listInt.GetList(); err != nil {
-			log.WriteLn(err.Error())
 			notFound(c, "Not found: "+err.Error())
 			return
 		}
