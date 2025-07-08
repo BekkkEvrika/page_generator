@@ -4,6 +4,7 @@ import (
 	"crypto/rsa"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -419,6 +420,25 @@ func (mw *GinJWTMiddleware) MiddlewareInit() error {
 		return ErrMissingSecretKey
 	}
 	return nil
+}
+
+func (mw *GinJWTMiddleware) GetKeyFunc() {
+	mw.KeyFunc = func(token *jwt.Token) (interface{}, error) {
+		if jwt.GetSigningMethod(mw.SigningAlgorithm) != token.Method {
+			return nil, ErrInvalidSigningAlgorithm
+		}
+		if mw.usingPublicKeyAlgo() {
+			return mw.pubKey, nil
+		}
+
+		keyId, ok := token.Header["kid"].(string)
+		if ok {
+			return mw.Tokens[keyId], nil
+		} else {
+			return nil, fmt.Errorf("Cannot parse kid header ")
+		}
+
+	}
 }
 
 // MiddlewareFunc makes GinJWTMiddleware implement the Middleware interface.
