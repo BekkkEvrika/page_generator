@@ -203,7 +203,7 @@ func (f *FieldType) setPgType(tp string) error {
 				f.PgType = types[2]
 			}
 		case -1:
-			return fmt.Errorf(" field type not found")
+			return fmt.Errorf(" field type not found: %s", f.Name)
 		}
 	}
 	return nil
