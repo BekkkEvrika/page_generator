@@ -52,6 +52,7 @@ type PageModel struct {
 	tableModel       interface{}
 	filterModel      interface{}
 	modelColSize     int
+	modelFieldSize   int
 	modelFieldTypes  []*FieldType
 	headerFieldTypes []*HeaderField
 
@@ -164,7 +165,7 @@ func (pm *PageModel) getCreatePage() *Page {
 	colLen := int(math.Ceil(float64(len(pm.modelFieldTypes) / pm.modelColSize)))
 	indCol := 0
 	column := inputs.Column{}
-	for ind := 0; ind < len(pm.modelFieldTypes); ind++ {
+	for ind := 0; ind < pm.modelFieldSize; ind++ {
 		indCol++
 		ft := pm.modelFieldTypes[ind]
 		if !ft.getGormAutoInc() && ft.pg != "-" {
@@ -223,7 +224,7 @@ func (pm *PageModel) getUpdatePage() *Page {
 	colLen := int(math.Ceil(float64(len(pm.modelFieldTypes) / pm.modelColSize)))
 	indCol := 0
 	column := inputs.Column{}
-	for ind := 0; ind < len(pm.modelFieldTypes); ind++ {
+	for ind := 0; ind < pm.modelFieldSize; ind++ {
 		indCol++
 		ft := pm.modelFieldTypes[ind]
 		if ft.pgEdit && ft.pg != "-" {
@@ -414,6 +415,7 @@ func (pm *PageModel) getFieldsModel(obj interface{}) error {
 		if ft.pg == "-" {
 			continue
 		}
+		pm.modelFieldSize++
 		ft.pgTemplate = field.Tag.Get(pgTemplate)
 		ft.pgSearchSource = field.Tag.Get(pgSearchSource)
 		ft.pgSearchObject = field.Tag.Get(pgSearchObject)
