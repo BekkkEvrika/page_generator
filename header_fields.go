@@ -1,6 +1,9 @@
 package page_generator
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type HeaderField struct {
 	Name     string
@@ -13,6 +16,14 @@ type HeaderField struct {
 
 func (f *HeaderField) init() {
 	f.Template = ""
+}
+
+func (f *HeaderField) getName() string {
+	if f.JsonName != "" {
+		return strings.Split(f.JsonName, ",")[0]
+	} else {
+		return f.Name
+	}
 }
 
 func (f *HeaderField) setExport(exp string) error {

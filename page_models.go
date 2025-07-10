@@ -93,7 +93,7 @@ func (pm *PageModel) getDataPage() *Page {
 		page.DataTable.DefaultUrl = "/" + serviceName + pm.defaultUrl
 		for in, val := range pm.headerFieldTypes {
 			h := inputs.TableHeader{
-				Key:          val.Name,
+				Key:          val.getName(),
 				Title:        val.Title,
 				Order:        in + 1,
 				Template:     val.Template,
