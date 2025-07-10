@@ -83,6 +83,28 @@ type PageModel struct {
 	filterType reflect.Type
 }
 
+func (pm *PageModel) getOnlyTable() *Page {
+	page := Page{}
+	if pm.filterModel != nil {
+		page.Form = &inputs.FormExported{}
+	}
+	if pm.getList != nil {
+		page.DataTable = &inputs.ExpDataTable{}
+		page.DataTable.DefaultUrl = "/" + serviceName + pm.defaultUrl
+		for in, val := range pm.headerFieldTypes {
+			h := inputs.TableHeader{
+				Key:          val.getName(),
+				Title:        val.Title,
+				Order:        in + 1,
+				Template:     val.Template,
+				IsExportable: val.Export,
+			}
+			page.DataTable.Header = append(page.DataTable.Header, h)
+		}
+	}
+	return &page
+}
+
 func (pm *PageModel) getDataPage() *Page {
 	page := Page{}
 	if pm.filterModel != nil {

@@ -11,6 +11,12 @@ func getListPageHandler(pg *PageModel) func(c *gin.Context) {
 	}
 }
 
+func getTablePageHandler(pg *PageModel) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		c.JSON(200, pg.getOnlyTable())
+	}
+}
+
 func getCreatePageHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		c.JSON(200, pg.getCreatePage())

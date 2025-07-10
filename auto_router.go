@@ -13,6 +13,7 @@ func GetModelsRoutes(g *gin.Engine) error {
 				val.pageListUrl = "/page/" + key + "/list"
 				val.defaultUrl = "/" + key + "s"
 				g.GET("/page/"+key+"/list", getListPageHandler(val))
+				g.GET("/page/"+key+"/table", getTablePageHandler(val))
 				g.GET("/"+key+"s", getDefaultListHandler(val))
 			}
 			if val.filterModel != nil {
