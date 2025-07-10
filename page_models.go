@@ -162,7 +162,7 @@ func (pm *PageModel) getDataPage() *Page {
 func (pm *PageModel) getCreatePage() *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(len(pm.modelFieldTypes) / pm.modelColSize)))
+	colLen := int(math.Ceil(float64(pm.modelFieldSize / pm.modelColSize)))
 	indCol := 0
 	column := inputs.Column{}
 	for ind := 0; ind < pm.modelFieldSize; ind++ {
@@ -221,7 +221,7 @@ func (pm *PageModel) getCreatePage() *Page {
 func (pm *PageModel) getUpdatePage() *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(len(pm.modelFieldTypes) / pm.modelColSize)))
+	colLen := int(math.Ceil(float64(pm.modelFieldSize / pm.modelColSize)))
 	indCol := 0
 	column := inputs.Column{}
 	for ind := 0; ind < pm.modelFieldSize; ind++ {
