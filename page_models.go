@@ -209,6 +209,9 @@ func (pm *PageModel) getCreatePage() *Page {
 			indCol = 0
 		}
 	}
+	if len(column.Inputs) > 0 {
+		p.Form.Columns = append(p.Form.Columns, column)
+	}
 	p.Form.Submit.Text = "Сохранить"
 	p.Form.Submit.Source = "/" + serviceName + pm.createUrl
 	p.Form.Submit.Method = "POST"
