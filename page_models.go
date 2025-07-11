@@ -166,9 +166,9 @@ func (pm *PageModel) getCreatePage() *Page {
 	indCol := 0
 	column := inputs.Column{}
 	for ind := 0; ind < pm.modelFieldSize; ind++ {
-		indCol++
 		ft := pm.modelFieldTypes[ind]
 		if !ft.getGormAutoInc() && ft.pg != "-" {
+			indCol++
 			inp, err := ft.makeInput()
 			if err == nil && inp != nil {
 				if pm.def != nil {
