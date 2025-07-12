@@ -149,7 +149,10 @@ func (f *FieldType) setPgVisible(text string) {
 }
 
 func (f *FieldType) setPgValid(text string) {
-	f.PgValid = text
+	if text != "" {
+		f.PgValid = text
+		f.PgText = f.PgText + "*"
+	}
 }
 
 func (f *FieldType) setPgReadOnly(read string) error {
