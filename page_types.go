@@ -7,6 +7,10 @@ type MetaData struct {
 	MetaData string
 }
 
+type IQueryParams interface {
+	GetDefaultQueryParams() map[string]string
+}
+
 type IContext interface {
 	GetContextActions() []inputs.Action
 }
@@ -20,20 +24,20 @@ type IExports interface {
 }
 
 type IGetList interface {
-	GetList(claims MapClaims) error
-	Filter(obj interface{}) error
+	GetList(params *QueryParams) error
+	Filter(obj interface{}, params *QueryParams) error
 }
 
 type ICreate interface {
-	Create(claims MapClaims) error
+	Create(params *QueryParams) error
 }
 
 type IUpdate interface {
-	Update(claims MapClaims) error
+	Update(params *QueryParams) error
 }
 
 type IDelete interface {
-	Delete(claims MapClaims) error
+	Delete(params *QueryParams) error
 }
 
 type IDefault interface {

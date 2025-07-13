@@ -195,7 +195,7 @@ var (
 	// ErrInvalidAuthHeader indicates auth header is invalid, could for example have the wrong Realm name
 	ErrInvalidAuthHeader = errors.New("auth header is invalid")
 
-	// ErrEmptyQueryToken can be thrown if authing with URL Query, the query token variable is empty
+	// ErrEmptyQueryToken can be thrown if authing with URL QData, the query token variable is empty
 	ErrEmptyQueryToken = errors.New("query token is empty")
 
 	// ErrEmptyCookieToken can be thrown if authing with a cookie, the token cookie is empty

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/BekkkEvrika/page_generator/inputs"
 	"math"
+	"net/url"
 	"reflect"
 	"strconv"
 	"time"
@@ -69,6 +70,7 @@ type PageModel struct {
 	context        IContext
 	indexes        IIndexes
 	exports        IExports
+	urlParams      IQueryParams
 
 	pageListUrl string
 	filterUrl   string
@@ -92,6 +94,8 @@ func (pm *PageModel) getOnlyTable() *Page {
 	if pm.getList != nil {
 		page.DataTable = &inputs.ExpDataTable{}
 		page.DataTable.DefaultUrl = "/" + serviceName + pm.defaultUrl
+		query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
+		page.DataTable.DefaultUrl = query
 		for in, val := range pm.headerFieldTypes {
 			h := inputs.TableHeader{
 				Key:          val.getName(),
@@ -114,6 +118,8 @@ func (pm *PageModel) getDataPage() *Page {
 	if pm.getList != nil {
 		page.DataTable = &inputs.ExpDataTable{}
 		page.DataTable.DefaultUrl = "/" + serviceName + pm.defaultUrl
+		query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
+		page.DataTable.DefaultUrl = query
 		for in, val := range pm.headerFieldTypes {
 			h := inputs.TableHeader{
 				Key:          val.getName(),
@@ -297,15 +303,6 @@ func (pm *PageModel) SetListModel(obj interface{}) error {
 	} else {
 		return fmt.Errorf("not list model")
 	}
-	if val, ok := obj.(IContext); ok {
-		pm.context = val
-	}
-	if val, ok := obj.(IIndexes); ok {
-		pm.indexes = val
-	}
-	if val, ok := obj.(IExports); ok {
-		pm.exports = val
-	}
 	pm.listModel = obj
 	pm.listType = reflect.TypeOf(obj)
 	return nil
@@ -327,6 +324,18 @@ func (pm *PageModel) SetFilterModel(obj interface{}) error {
 func (pm *PageModel) SetTableModel(obj interface{}) error {
 	if err := pm.getFieldsTable(obj); err != nil {
 		return err
+	}
+	if val, ok := obj.(IContext); ok {
+		pm.context = val
+	}
+	if val, ok := obj.(IIndexes); ok {
+		pm.indexes = val
+	}
+	if val, ok := obj.(IExports); ok {
+		pm.exports = val
+	}
+	if val, ok := obj.(IQueryParams); ok {
+		pm.urlParams = val
 	}
 	pm.tableModel = obj
 	return nil
@@ -443,6 +452,19 @@ func (pm *PageModel) getFieldsModel(obj interface{}) error {
 		pm.modelFieldTypes = append(pm.modelFieldTypes, &ft)
 	}
 	return nil
+}
+
+func (pm *PageModel) setQueryParams(defUrl string) (string, error) {
+	u, err := url.Parse(defUrl)
+	if err != nil {
+		return defUrl, nil // или можно вернуть "", если критично
+	}
+	q := u.Query()
+	for key, value := range pm.urlParams.GetDefaultQueryParams() {
+		q.Set(key, value)
+	}
+	u.RawQuery = q.Encode()
+	return u.String(), nil
 }
 
 func checkType(t reflect.Type) int {
