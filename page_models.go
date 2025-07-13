@@ -70,7 +70,7 @@ type PageModel struct {
 	context        IContext
 	indexes        IIndexes
 	exports        IExports
-	urlParams      IQueryParams
+	queryParams    IQueryParams
 
 	pageListUrl string
 	filterUrl   string
@@ -94,8 +94,10 @@ func (pm *PageModel) getOnlyTable() *Page {
 	if pm.getList != nil {
 		page.DataTable = &inputs.ExpDataTable{}
 		page.DataTable.DefaultUrl = "/" + serviceName + pm.defaultUrl
-		query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
-		page.DataTable.DefaultUrl = query
+		if pm.queryParams != nil {
+			query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
+			page.DataTable.DefaultUrl = query
+		}
 		for in, val := range pm.headerFieldTypes {
 			h := inputs.TableHeader{
 				Key:          val.getName(),
@@ -118,8 +120,10 @@ func (pm *PageModel) getDataPage() *Page {
 	if pm.getList != nil {
 		page.DataTable = &inputs.ExpDataTable{}
 		page.DataTable.DefaultUrl = "/" + serviceName + pm.defaultUrl
-		query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
-		page.DataTable.DefaultUrl = query
+		if pm.queryParams != nil {
+			query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
+			page.DataTable.DefaultUrl = query
+		}
 		for in, val := range pm.headerFieldTypes {
 			h := inputs.TableHeader{
 				Key:          val.getName(),
@@ -335,7 +339,7 @@ func (pm *PageModel) SetTableModel(obj interface{}) error {
 		pm.exports = val
 	}
 	if val, ok := obj.(IQueryParams); ok {
-		pm.urlParams = val
+		pm.queryParams = val
 	}
 	pm.tableModel = obj
 	return nil
@@ -460,7 +464,7 @@ func (pm *PageModel) setQueryParams(defUrl string) (string, error) {
 		return defUrl, nil // или можно вернуть "", если критично
 	}
 	q := u.Query()
-	for key, value := range pm.urlParams.GetDefaultQueryParams() {
+	for key, value := range pm.queryParams.GetDefaultQueryParams() {
 		q.Set(key, value)
 	}
 	u.RawQuery = q.Encode()
