@@ -1,6 +1,8 @@
 package page_generator
 
 import (
+	"database/sql/driver"
+	"fmt"
 	"strings"
 	"time"
 )
@@ -8,7 +10,7 @@ import (
 type Date time.Time
 
 func (d *Date) UnmarshalText(text []byte) error {
-	t, err := time.Parse(JavaToGoTimeFormat(globalDateFormat), string(text))
+	t, err := time.Parse(javaToGoTimeFormat(globalDateFormat), string(text))
 	if err != nil {
 		return err
 	}
@@ -16,7 +18,20 @@ func (d *Date) UnmarshalText(text []byte) error {
 	return nil
 }
 
-func JavaToGoTimeFormat(javaFmt string) string {
+func (d Date) Value() (driver.Value, error) {
+	return time.Time(d).Format(javaToGoTimeFormat(globalDateFormat)), nil
+}
+
+func (d *Date) Scan(value interface{}) error {
+	t, ok := value.(time.Time)
+	if !ok {
+		return fmt.Errorf("Date: cannot scan type %T into Date ", value)
+	}
+	*d = Date(t)
+	return nil
+}
+
+func javaToGoTimeFormat(javaFmt string) string {
 	replacer := strings.NewReplacer(
 		"yyyy", "2006",
 		"yy", "06",
