@@ -41,10 +41,10 @@ const (
 )
 
 const (
-	deleteAction     = "delete"
-	loadTabAction    = "load"
-	loadDialogAction = "loadDialog"
-	loadHTML         = "loadHtml"
+	DeleteAction     = "delete"
+	LoadTabAction    = "load"
+	LoadDialogAction = "loadDialog"
+	LoadHTML         = "loadHtml"
 )
 
 type PageModel struct {
@@ -151,7 +151,7 @@ func (pm *PageModel) getDataPage() *Page {
 	}
 	if pm.delete != nil {
 		page.DataTable.Delete = inputs.Action{
-			Type:   deleteAction,
+			Type:   DeleteAction,
 			Source: "/" + serviceName + pm.deleteUrl,
 			Method: "DELETE",
 			Text:   "Удалить",
