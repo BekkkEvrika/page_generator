@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -463,11 +464,20 @@ func (pm *PageModel) setQueryParams(defUrl string) (string, error) {
 	if err != nil {
 		return defUrl, nil // или можно вернуть "", если критично
 	}
-	q := u.Query()
-	for key, value := range pm.queryParams.GetDefaultQueryParams() {
-		q.Set(key, value)
+	original := u.RawQuery
+
+	// Собираем новые параметры вручную
+	var parts []string
+	for k, v := range pm.queryParams.GetDefaultQueryParams() {
+		parts = append(parts, k+"="+v)
 	}
-	u.RawQuery = q.Encode()
+
+	// Объединяем со старой query-строкой, если она была
+	if original != "" {
+		u.RawQuery = original + "&" + strings.Join(parts, "&")
+	} else {
+		u.RawQuery = strings.Join(parts, "&")
+	}
 	return u.String(), nil
 }
 
