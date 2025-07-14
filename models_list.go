@@ -10,8 +10,11 @@ var pgModels map[string]*PageModel // page models list
 
 var serviceName string
 
-func SetDefinitions(init InitFunction, service string) error {
+var globalDateFormat string
+
+func SetDefinitions(init InitFunction, service string, dateFormat string) error {
 	serviceName = service
+	globalDateFormat = dateFormat
 	if err := startPaging(); err != nil {
 		return err
 	}
@@ -22,6 +25,9 @@ func SetDefinitions(init InitFunction, service string) error {
 func startPaging() error {
 	if serviceName == "" {
 		return fmt.Errorf("service name is empty ")
+	}
+	if globalDateFormat == "" {
+		return fmt.Errorf("global date format is empty")
 	}
 	if pgModels == nil {
 		pgModels = make(map[string]*PageModel)

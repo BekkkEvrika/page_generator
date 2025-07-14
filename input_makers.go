@@ -30,7 +30,7 @@ func dateTime(f *FieldType) *inputs.Input {
 		FromName:   f.getFromName(),
 		ReadOnly:   f.PgReadOnly,
 		Text:       f.PgText,
-		Format:     f.PgFormat,
+		Format:     globalDateFormat,
 		Visible:    f.pgVisible,
 		SearchName: f.pgSearchObject,
 	}

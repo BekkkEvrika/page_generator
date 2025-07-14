@@ -17,7 +17,6 @@ const (
 	pgText         = "pgText"
 	pgReadOnly     = "pgReadOnly"
 	pgValid        = "pgValid"
-	pgFormat       = "pgFormat"
 	pgMaxLength    = "pgMax"
 	pgMinLength    = "pgMin"
 	pgEdit         = "pgEdit"
@@ -450,7 +449,6 @@ func (pm *PageModel) getFieldsModel(obj interface{}) error {
 			return err
 		}
 		ft.setPgValid(field.Tag.Get(pgValid))
-		ft.setPgFormat(field.Tag.Get(pgFormat))
 		ft.setMaxLength(field.Tag.Get(pgMaxLength))
 		ft.setMinLength(field.Tag.Get(pgMinLength))
 		ft.setPgVisible(field.Tag.Get(pgVisible))

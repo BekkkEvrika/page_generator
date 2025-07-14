@@ -27,7 +27,6 @@ type FieldType struct {
 	PgText         string
 	PgReadOnly     bool
 	PgValid        string
-	PgFormat       string
 	pgMax          int
 	pgMin          int
 	pgEdit         bool
@@ -47,7 +46,6 @@ func (f *FieldType) init() {
 	f.PgText = ""
 	f.PgReadOnly = false
 	f.PgValid = ""
-	f.PgFormat = ""
 }
 
 func (f *FieldType) makeInput() (*inputs.Input, error) {
@@ -130,14 +128,6 @@ func (f *FieldType) setMaxLength(text string) {
 func (f *FieldType) setMinLength(text string) {
 	num, _ := strconv.Atoi(text)
 	f.pgMin = num
-}
-
-func (f *FieldType) setPgFormat(text string) {
-	if text != "" {
-		f.PgFormat = text
-	} else {
-		f.PgFormat = "YYYY-MM-DD"
-	}
 }
 
 func (f *FieldType) setPg(text string) {
