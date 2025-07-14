@@ -189,6 +189,10 @@ func (f *FieldType) setPgType(tp string) error {
 	if tp != "" {
 		if contains(types, tp) {
 			f.PgType = tp
+			switch f.Type {
+			case number:
+				f.pgDataType = "number"
+			}
 		} else {
 			return fmt.Errorf(" error input type ")
 		}
