@@ -8,7 +8,6 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
-	"time"
 )
 
 const (
@@ -480,7 +479,7 @@ func (pm *PageModel) setQueryParams(defUrl string) (string, error) {
 }
 
 func checkType(t reflect.Type) int {
-	timeType := reflect.TypeOf(time.Time{})
+	timeType := reflect.TypeOf(Date{})
 	switch t.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
 		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
