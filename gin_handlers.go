@@ -19,13 +19,13 @@ func getTablePageHandler(pg *PageModel) func(c *gin.Context) {
 
 func getCreatePageHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, pg.getCreatePage())
+		c.JSON(200, pg.model.getCreatePage())
 	}
 }
 
 func getUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, pg.getUpdatePage())
+		c.JSON(200, pg.model.getUpdatePage())
 	}
 }
 

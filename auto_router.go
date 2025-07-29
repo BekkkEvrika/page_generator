@@ -17,22 +17,22 @@ func GetModelsRoutes(g *gin.Engine) error {
 				g.GET("/"+key+"s", getDefaultListHandler(val))
 			}
 			if val.filterModel != nil {
-				val.filterUrl = "/" + key + "s/filter"
+				val.filterModel.filterUrl = "/" + key + "s/filter"
 				g.POST("/"+key+"s/filter", postFilterDataHandler(val))
 			}
-			if val.delete != nil {
+			if val.model.delete != nil {
 				val.deleteUrl = "/" + key
 				g.DELETE("/"+key, deleteDataHandler(val))
 			}
-			if val.create != nil {
+			if val.model.create != nil {
 				val.addUrl = "/page/" + key + "/create"
-				val.createUrl = "/" + key
+				val.model.createUrl = "/" + key
 				g.GET("/page/"+key+"/create", getCreatePageHandler(val))
 				g.POST("/"+key, postCreateDataHandler(val))
 			}
-			if val.update != nil {
+			if val.model.update != nil {
 				val.editUrl = "/page/" + key + "/update"
-				val.updateUrl = "/" + key
+				val.model.updateUrl = "/" + key
 				g.GET("/page/"+key+"/update", getUpdatePageHandler(val))
 				g.PUT("/"+key, putUpdateDataHandler(val))
 			}
