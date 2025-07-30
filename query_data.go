@@ -6,6 +6,8 @@ type QueryParams struct {
 	Claims MapClaims
 	QData  url.Values
 	Token  string
+	Limit  int
+	Offset int
 }
 
 func (c *QueryParams) GetQuery(key string) (string, bool) {

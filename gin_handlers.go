@@ -3,6 +3,7 @@ package page_generator
 import (
 	"github.com/gin-gonic/gin"
 	"reflect"
+	"strconv"
 )
 
 func getListPageHandler(pg *PageModel) func(c *gin.Context) {
@@ -150,10 +151,19 @@ func deleteDataHandler(pg *PageModel) func(c *gin.Context) {
 
 func getDefaultListHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
+		var err error
+		lim, err := strconv.Atoi(c.Query("limit"))
+		off, err := strconv.Atoi(c.Query("offset"))
+		if err != nil {
+			badRequest(c, err.Error())
+			return
+		}
 		params := QueryParams{
 			Claims: ExtractClaims(c),
 			QData:  c.Request.URL.Query(),
 			Token:  c.GetHeader("Authorization"),
+			Limit:  lim,
+			Offset: off,
 		}
 		listPtr := reflect.New(pg.listType.Elem()).Interface()
 		listInt, ok := listPtr.(IGetList)
