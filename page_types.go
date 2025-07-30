@@ -28,6 +28,10 @@ type IGetList interface {
 	Filter(obj interface{}, params *QueryParams) error
 }
 
+type IPagination interface {
+	GetCount(params *QueryParams) (int, error)
+}
+
 type ICreate interface {
 	Create(params *QueryParams) error
 }

@@ -12,9 +12,18 @@ var serviceName string
 
 var globalDateFormat string
 
-func SetDefinitions(init InitFunction, service string, dateFormat string) error {
-	serviceName = service
-	globalDateFormat = dateFormat
+var pageSize int
+
+type PageSetting struct {
+	Service    string
+	DateFormat string
+	PageSize   int
+}
+
+func SetDefinitions(init InitFunction, setting PageSetting) error {
+	serviceName = setting.Service
+	globalDateFormat = setting.DateFormat
+	pageSize = setting.PageSize
 	if err := startPaging(); err != nil {
 		return err
 	}

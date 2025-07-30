@@ -16,6 +16,10 @@ func GetModelsRoutes(g *gin.Engine) error {
 				g.GET("/page/"+key+"/table", getTablePageHandler(val))
 				g.GET("/"+key+"s", getDefaultListHandler(val))
 			}
+			if val.pagination != nil {
+				val.countUrl = "/" + key + "s/count"
+				g.GET("/"+key+"s/count", getCountItemsHandler(val))
+			}
 			if val.filterModel != nil {
 				val.filterModel.filterUrl = "/" + key + "s/filter"
 				g.POST("/"+key+"s/filter", postFilterDataHandler(val))

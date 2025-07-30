@@ -29,6 +29,24 @@ func getUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 	}
 }
 
+func getCountItemsHandler(pg *PageModel) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		params := QueryParams{
+			Claims: ExtractClaims(c),
+			QData:  c.Request.URL.Query(),
+			Token:  c.GetHeader("Authorization"),
+		}
+		kol, err := pg.pagination.GetCount(&params)
+		if err != nil {
+			notFound(c, "Not found: "+err.Error())
+			return
+		}
+		mp := make(map[string]int)
+		mp["id"] = kol
+		c.JSON(200, mp)
+	}
+}
+
 func postFilterDataHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		filter := reflect.New(pg.filterType.Elem()).Interface()

@@ -55,11 +55,13 @@ type PageModel struct {
 	indexes          IIndexes
 	exports          IExports
 	queryParams      IQueryParams
+	pagination       IPagination
 	pageListUrl      string
 	defaultUrl       string
 	addUrl           string
 	editUrl          string
 	deleteUrl        string
+	countUrl         string
 	listType         reflect.Type
 	modelType        reflect.Type
 	filterType       reflect.Type
@@ -102,6 +104,10 @@ func (pm *PageModel) getDataPage() *Page {
 		if pm.queryParams != nil {
 			query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
 			page.DataTable.DefaultUrl = query
+		}
+		if pm.pagination != nil {
+			page.DataTable.PageSize = pageSize
+
 		}
 		for in, val := range pm.headerFieldTypes {
 			h := inputs.TableHeader{
@@ -156,6 +162,9 @@ func (pm *PageModel) SetListModel(obj interface{}) error {
 		pm.getList = val
 	} else {
 		return fmt.Errorf("not list model")
+	}
+	if val, ok := obj.(IPagination); ok {
+		pm.pagination = val
 	}
 	pm.listModel = obj
 	pm.listType = reflect.TypeOf(obj)
