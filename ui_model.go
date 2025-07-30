@@ -133,7 +133,7 @@ func (model *UIModel) getUpdatePage() *Page {
 func (model *UIModel) getFilterPage() *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
+	colLen := int(math.Ceil(float64(model.fieldSize) / float64(model.columnSize)))
 	indCol := 0
 	column := inputs.Column{}
 	for ind := 0; ind < model.fieldSize; ind++ {
