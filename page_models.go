@@ -79,6 +79,10 @@ func (pm *PageModel) getOnlyTable() *Page {
 			query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
 			page.DataTable.DefaultUrl = query
 		}
+		if pm.pagination != nil {
+			page.DataTable.PageSize = pageSize
+			page.DataTable.ItemsCount = "/" + serviceName + pm.countUrl
+		}
 		for in, val := range pm.headerFieldTypes {
 			h := inputs.TableHeader{
 				Key:          val.getName(),
@@ -107,7 +111,7 @@ func (pm *PageModel) getDataPage() *Page {
 		}
 		if pm.pagination != nil {
 			page.DataTable.PageSize = pageSize
-
+			page.DataTable.ItemsCount = "/" + serviceName + pm.countUrl
 		}
 		for in, val := range pm.headerFieldTypes {
 			h := inputs.TableHeader{
