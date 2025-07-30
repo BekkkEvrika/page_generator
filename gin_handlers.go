@@ -31,7 +31,7 @@ func getUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 
 func postFilterDataHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		filter := reflect.New(pg.filterType).Interface()
+		filter := reflect.New(pg.modelType.Elem()).Interface()
 		list := reflect.New(pg.listType.Elem()).Interface()
 		params := QueryParams{
 			Claims: ExtractClaims(c),
