@@ -152,8 +152,15 @@ func deleteDataHandler(pg *PageModel) func(c *gin.Context) {
 func getDefaultListHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var err error
-		lim, err := strconv.Atoi(c.Query("limit"))
-		off, err := strconv.Atoi(c.Query("offset"))
+		var limit, offset int
+		lim := c.Query("limit")
+		off := c.Query("offset")
+		if lim != "" {
+			limit, err = strconv.Atoi(lim)
+		}
+		if off != "" {
+			offset, err = strconv.Atoi(off)
+		}
 		if err != nil {
 			badRequest(c, err.Error())
 			return
@@ -162,8 +169,8 @@ func getDefaultListHandler(pg *PageModel) func(c *gin.Context) {
 			Claims: ExtractClaims(c),
 			QData:  c.Request.URL.Query(),
 			Token:  c.GetHeader("Authorization"),
-			Limit:  lim,
-			Offset: off,
+			Limit:  limit,
+			Offset: offset,
 		}
 		listPtr := reflect.New(pg.listType.Elem()).Interface()
 		listInt, ok := listPtr.(IGetList)
