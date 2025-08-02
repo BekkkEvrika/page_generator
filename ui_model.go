@@ -63,7 +63,7 @@ func (model *UIModel) setModel(obj interface{}, columns int) error {
 	return nil
 }
 
-func (model *UIModel) getUpdatePage() *Page {
+func (model *UIModel) getUpdatePage(params *QueryParams) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
 	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
@@ -84,7 +84,7 @@ func (model *UIModel) getUpdatePage() *Page {
 					}
 				}
 				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault()[inp.Name]
+					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
 				}
 				if model.completeNodes != nil {
 					if items, ok := model.completeNodes.GetCompleteNodes()[inp.Name]; ok {
@@ -130,7 +130,7 @@ func (model *UIModel) getUpdatePage() *Page {
 	return &p
 }
 
-func (model *UIModel) getFilterPage() *Page {
+func (model *UIModel) getFilterPage(params *QueryParams) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
 	colLen := int(math.Ceil(float64(model.fieldSize) / float64(model.columnSize)))
@@ -143,7 +143,7 @@ func (model *UIModel) getFilterPage() *Page {
 			inp, err := ft.makeInput()
 			if err == nil && inp != nil {
 				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault()[inp.Name]
+					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
 				}
 				if model.combo != nil {
 					if items, ok := model.combo.GetComboItems()[inp.Name]; ok {
@@ -190,7 +190,7 @@ func (model *UIModel) getFilterPage() *Page {
 	return &p
 }
 
-func (model *UIModel) getCreatePage() *Page {
+func (model *UIModel) getCreatePage(params *QueryParams) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
 	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
@@ -203,7 +203,7 @@ func (model *UIModel) getCreatePage() *Page {
 			inp, err := ft.makeInput()
 			if err == nil && inp != nil {
 				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault()[inp.Name]
+					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
 				}
 				if model.combo != nil {
 					if items, ok := model.combo.GetComboItems()[inp.Name]; ok {

@@ -8,25 +8,45 @@ import (
 
 func getListPageHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, pg.getDataPage())
+		params := QueryParams{
+			Claims: ExtractClaims(c),
+			QData:  c.Request.URL.Query(),
+			Token:  c.GetHeader("Authorization"),
+		}
+		c.JSON(200, pg.getDataPage(&params))
 	}
 }
 
 func getTablePageHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, pg.getOnlyTable())
+		params := QueryParams{
+			Claims: ExtractClaims(c),
+			QData:  c.Request.URL.Query(),
+			Token:  c.GetHeader("Authorization"),
+		}
+		c.JSON(200, pg.getOnlyTable(&params))
 	}
 }
 
 func getCreatePageHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, pg.model.getCreatePage())
+		params := QueryParams{
+			Claims: ExtractClaims(c),
+			QData:  c.Request.URL.Query(),
+			Token:  c.GetHeader("Authorization"),
+		}
+		c.JSON(200, pg.model.getCreatePage(&params))
 	}
 }
 
 func getUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.JSON(200, pg.model.getUpdatePage())
+		params := QueryParams{
+			Claims: ExtractClaims(c),
+			QData:  c.Request.URL.Query(),
+			Token:  c.GetHeader("Authorization"),
+		}
+		c.JSON(200, pg.model.getUpdatePage(&params))
 	}
 }
 

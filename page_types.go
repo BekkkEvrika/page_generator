@@ -45,7 +45,7 @@ type IDelete interface {
 }
 
 type IDefault interface {
-	GetDefault() map[string]string
+	GetDefault(params *QueryParams) map[string]string
 }
 
 type IComboBox interface {
