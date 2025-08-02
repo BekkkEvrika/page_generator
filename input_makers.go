@@ -109,6 +109,7 @@ func hidden(f *FieldType) *inputs.Input {
 		Type:       types[8],
 		Name:       f.getName(),
 		FromName:   f.getFromName(),
+		DataType:   f.pgDataType,
 		SearchName: f.pgSearchObject,
 	}
 	return &in
