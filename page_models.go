@@ -263,6 +263,9 @@ func (pm *PageModel) setQueryParams(defUrl string) (string, error) {
 }
 
 func checkType(t reflect.Type) int {
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
 	timeType := reflect.TypeOf(Date{})
 	switch t.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
