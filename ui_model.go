@@ -121,11 +121,11 @@ func (model *UIModel) getUpdatePage(params *QueryParams) *Page {
 			indCol = 0
 		}
 	}
-	p.Form.Submit.Text = "Сохранить"
+	p.Form.Submit.Text = "Сабт"
 	p.Form.Submit.Source = "/" + serviceName + model.updateUrl
 	p.Form.Submit.Method = "PUT"
-	p.Form.Submit.SuccessMessage = "Успешно сохранено!"
-	p.Form.Submit.ConfirmMessage = "Действительно хотите совершить эту операцию?"
+	p.Form.Submit.SuccessMessage = "Сабт карда шуд!"
+	p.Form.Submit.ConfirmMessage = "Шумо мехоҳед амалиётро сабт намоед?"
 	p.Form.Submit.LastAction = "success-message,close"
 	return &p
 }
@@ -183,7 +183,7 @@ func (model *UIModel) getFilterPage(params *QueryParams) *Page {
 	if len(column.Inputs) > 0 {
 		p.Form.Columns = append(p.Form.Columns, column)
 	}
-	p.Form.Submit.Text = "Найти"
+	p.Form.Submit.Text = "Ҷустуҷӯ"
 	p.Form.Submit.Source = "/" + serviceName + model.filterUrl
 	p.Form.Submit.Method = "POST"
 	p.Form.Submit.Type = "loader"
@@ -243,11 +243,11 @@ func (model *UIModel) getCreatePage(params *QueryParams) *Page {
 	if len(column.Inputs) > 0 {
 		p.Form.Columns = append(p.Form.Columns, column)
 	}
-	p.Form.Submit.Text = "Сохранить"
+	p.Form.Submit.Text = "Сабт"
 	p.Form.Submit.Source = "/" + serviceName + model.createUrl
 	p.Form.Submit.Method = "POST"
-	p.Form.Submit.SuccessMessage = "Успешно сохранено!"
-	p.Form.Submit.ConfirmMessage = "Действительно хотите совершить эту операцию?"
+	p.Form.Submit.SuccessMessage = "Сабт карда шуд!"
+	p.Form.Submit.ConfirmMessage = "Шумо мехоҳед амалиётро сабт намоед?"
 	p.Form.Submit.LastAction = "success-message,close"
 	return &p
 }
