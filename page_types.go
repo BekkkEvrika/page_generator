@@ -67,3 +67,7 @@ type IMetaData interface {
 type IClearNodes interface {
 	GetClearNodes() map[string][]string
 }
+
+type IEditData interface {
+	GetEditPage() inputs.LoadAction
+}

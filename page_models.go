@@ -56,6 +56,7 @@ type PageModel struct {
 	exports          IExports
 	queryParams      IQueryParams
 	pagination       IPagination
+	editPage         IEditData
 	pageListUrl      string
 	defaultUrl       string
 	addUrl           string
@@ -132,10 +133,14 @@ func (pm *PageModel) getDataPage(params *QueryParams) *Page {
 		}
 	}
 	if pm.model.update != nil {
-		page.DataTable.Edit = inputs.LoadAction{
-			Source: "/" + serviceName + pm.editUrl,
-			Action: loadDialog,
-			Text:   "Изменить",
+		if pm.editPage != nil {
+			page.DataTable.Edit = pm.editPage.GetEditPage()
+		} else {
+			page.DataTable.Edit = inputs.LoadAction{
+				Source: "/" + serviceName + pm.editUrl,
+				Action: loadDialog,
+				Text:   "Изменить",
+			}
 		}
 	}
 	if pm.model.delete != nil {
