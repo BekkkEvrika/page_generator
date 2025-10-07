@@ -205,6 +205,9 @@ func (pm *PageModel) SetTableModel(obj interface{}) error {
 	if val, ok := obj.(IQueryParams); ok {
 		pm.queryParams = val
 	}
+	if val, ok := obj.(IEditData); ok {
+		pm.editPage = val
+	}
 	pm.tableModel = obj
 	return nil
 }
