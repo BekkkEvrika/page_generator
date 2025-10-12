@@ -34,7 +34,7 @@ const (
 
 const (
 	loadDialog = "dialog"
-	loadTab    = "tab"
+	LoadTab    = "tab"
 )
 
 const (

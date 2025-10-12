@@ -79,7 +79,7 @@ func (model *UIModel) getUpdatePage(params *QueryParams) *Page {
 					inp.ReadOnly = true
 				}
 				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems()[inp.Name]; ok {
+					if items, ok := model.combo.GetComboItems(params)[inp.Name]; ok {
 						inp.Items = items
 					}
 				}
@@ -146,7 +146,7 @@ func (model *UIModel) getFilterPage(params *QueryParams) *Page {
 					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
 				}
 				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems()[inp.Name]; ok {
+					if items, ok := model.combo.GetComboItems(params)[inp.Name]; ok {
 						inp.Items = items
 					}
 				}
@@ -206,7 +206,7 @@ func (model *UIModel) getCreatePage(params *QueryParams) *Page {
 					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
 				}
 				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems()[inp.Name]; ok {
+					if items, ok := model.combo.GetComboItems(params)[inp.Name]; ok {
 						inp.Items = items
 					}
 				}

@@ -49,7 +49,7 @@ type IDefault interface {
 }
 
 type IComboBox interface {
-	GetComboItems() map[string]inputs.ComboItems
+	GetComboItems(params *QueryParams) map[string]inputs.ComboItems
 }
 
 type ICompleteNodes interface {
