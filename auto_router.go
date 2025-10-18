@@ -32,12 +32,14 @@ func GetModelsRoutes(g *gin.Engine) error {
 				val.addUrl = "/page/" + key + "/create"
 				val.model.createUrl = "/" + key
 				g.GET("/page/"+key+"/create", getCreatePageHandler(val))
+				g.POST("/page/"+key+"/create", postCreatePageHandler(val))
 				g.POST("/"+key, postCreateDataHandler(val))
 			}
 			if val.model.update != nil {
 				val.editUrl = "/page/" + key + "/update"
 				val.model.updateUrl = "/" + key
 				g.GET("/page/"+key+"/update", getUpdatePageHandler(val))
+				g.POST("/page/"+key+"/update", postUpdatePageHandler(val))
 				g.PUT("/"+key, putUpdateDataHandler(val))
 			}
 		}

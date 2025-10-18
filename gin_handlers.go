@@ -58,6 +58,23 @@ func getCreatePageHandler(pg *PageModel) func(c *gin.Context) {
 	}
 }
 
+func postCreatePageHandler(pg *PageModel) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		params := QueryParams{
+			Claims: ExtractClaims(c),
+			QData:  c.Request.URL.Query(),
+			Token:  c.GetHeader("Authorization"),
+		}
+		md := make(map[string]interface{})
+		if err := c.ShouldBind(&md); err != nil {
+			//fmt.Println(err.Error())
+			badRequest(c, err.Error())
+			return
+		}
+		c.JSON(200, pg.model.getCreatePage(&params, md))
+	}
+}
+
 func getUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		params := QueryParams{
@@ -70,6 +87,22 @@ func getUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 			fmt.Println(err.Error())
 			//badRequest(c, err.Error())
 			//return
+		}
+		c.JSON(200, pg.model.getUpdatePage(&params, md))
+	}
+}
+
+func postUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		params := QueryParams{
+			Claims: ExtractClaims(c),
+			QData:  c.Request.URL.Query(),
+			Token:  c.GetHeader("Authorization"),
+		}
+		md := make(map[string]interface{})
+		if err := c.ShouldBind(&md); err != nil {
+			badRequest(c, err.Error())
+			return
 		}
 		c.JSON(200, pg.model.getUpdatePage(&params, md))
 	}
