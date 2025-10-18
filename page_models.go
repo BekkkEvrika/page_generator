@@ -68,10 +68,10 @@ type PageModel struct {
 	filterType       reflect.Type
 }
 
-func (pm *PageModel) getOnlyTable(params *QueryParams) *Page {
+func (pm *PageModel) getOnlyTable(params *QueryParams, md map[string]interface{}) *Page {
 	page := &Page{}
 	if pm.filterModel != nil {
-		page = pm.filterModel.getFilterPage(params)
+		page = pm.filterModel.getFilterPage(params, md)
 	}
 	if pm.getList != nil {
 		page.DataTable = &inputs.ExpDataTable{}
@@ -98,10 +98,10 @@ func (pm *PageModel) getOnlyTable(params *QueryParams) *Page {
 	return page
 }
 
-func (pm *PageModel) getDataPage(params *QueryParams) *Page {
+func (pm *PageModel) getDataPage(params *QueryParams, md map[string]interface{}) *Page {
 	page := &Page{}
 	if pm.filterModel != nil {
-		page = pm.filterModel.getFilterPage(params)
+		page = pm.filterModel.getFilterPage(params, md)
 	}
 	if pm.getList != nil {
 		page.DataTable = &inputs.ExpDataTable{}

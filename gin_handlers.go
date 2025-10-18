@@ -13,7 +13,12 @@ func getListPageHandler(pg *PageModel) func(c *gin.Context) {
 			QData:  c.Request.URL.Query(),
 			Token:  c.GetHeader("Authorization"),
 		}
-		c.JSON(200, pg.getDataPage(&params))
+		md := make(map[string]interface{})
+		if err := c.ShouldBind(&md); err != nil {
+			badRequest(c, err.Error())
+			return
+		}
+		c.JSON(200, pg.getDataPage(&params, md))
 	}
 }
 
@@ -24,7 +29,12 @@ func getTablePageHandler(pg *PageModel) func(c *gin.Context) {
 			QData:  c.Request.URL.Query(),
 			Token:  c.GetHeader("Authorization"),
 		}
-		c.JSON(200, pg.getOnlyTable(&params))
+		md := make(map[string]interface{})
+		if err := c.ShouldBind(&md); err != nil {
+			badRequest(c, err.Error())
+			return
+		}
+		c.JSON(200, pg.getOnlyTable(&params, md))
 	}
 }
 
@@ -35,7 +45,12 @@ func getCreatePageHandler(pg *PageModel) func(c *gin.Context) {
 			QData:  c.Request.URL.Query(),
 			Token:  c.GetHeader("Authorization"),
 		}
-		c.JSON(200, pg.model.getCreatePage(&params))
+		md := make(map[string]interface{})
+		if err := c.ShouldBind(&md); err != nil {
+			badRequest(c, err.Error())
+			return
+		}
+		c.JSON(200, pg.model.getCreatePage(&params, md))
 	}
 }
 
@@ -46,7 +61,12 @@ func getUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 			QData:  c.Request.URL.Query(),
 			Token:  c.GetHeader("Authorization"),
 		}
-		c.JSON(200, pg.model.getUpdatePage(&params))
+		md := make(map[string]interface{})
+		if err := c.ShouldBind(&md); err != nil {
+			badRequest(c, err.Error())
+			return
+		}
+		c.JSON(200, pg.model.getUpdatePage(&params, md))
 	}
 }
 

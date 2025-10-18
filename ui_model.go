@@ -63,7 +63,7 @@ func (model *UIModel) setModel(obj interface{}, columns int) error {
 	return nil
 }
 
-func (model *UIModel) getUpdatePage(params *QueryParams) *Page {
+func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
 	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
@@ -79,7 +79,7 @@ func (model *UIModel) getUpdatePage(params *QueryParams) *Page {
 					inp.ReadOnly = true
 				}
 				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems(params)[inp.Name]; ok {
+					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
 						inp.Items = items
 					}
 				}
@@ -130,7 +130,7 @@ func (model *UIModel) getUpdatePage(params *QueryParams) *Page {
 	return &p
 }
 
-func (model *UIModel) getFilterPage(params *QueryParams) *Page {
+func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
 	colLen := int(math.Ceil(float64(model.fieldSize) / float64(model.columnSize)))
@@ -146,7 +146,7 @@ func (model *UIModel) getFilterPage(params *QueryParams) *Page {
 					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
 				}
 				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems(params)[inp.Name]; ok {
+					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
 						inp.Items = items
 					}
 				}
@@ -190,7 +190,7 @@ func (model *UIModel) getFilterPage(params *QueryParams) *Page {
 	return &p
 }
 
-func (model *UIModel) getCreatePage(params *QueryParams) *Page {
+func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
 	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
@@ -206,7 +206,7 @@ func (model *UIModel) getCreatePage(params *QueryParams) *Page {
 					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
 				}
 				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems(params)[inp.Name]; ok {
+					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
 						inp.Items = items
 					}
 				}
