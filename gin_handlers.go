@@ -1,6 +1,7 @@
 package page_generator
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"reflect"
 	"strconv"
@@ -15,8 +16,9 @@ func getListPageHandler(pg *PageModel) func(c *gin.Context) {
 		}
 		md := make(map[string]interface{})
 		if err := c.ShouldBind(&md); err != nil {
-			badRequest(c, err.Error())
-			return
+			fmt.Println(err.Error())
+			//badRequest(c, err.Error())
+			//return
 		}
 		c.JSON(200, pg.getDataPage(&params, md))
 	}
@@ -31,8 +33,9 @@ func getTablePageHandler(pg *PageModel) func(c *gin.Context) {
 		}
 		md := make(map[string]interface{})
 		if err := c.ShouldBind(&md); err != nil {
-			badRequest(c, err.Error())
-			return
+			fmt.Println(err.Error())
+			//badRequest(c, err.Error())
+			//return
 		}
 		c.JSON(200, pg.getOnlyTable(&params, md))
 	}
@@ -47,8 +50,9 @@ func getCreatePageHandler(pg *PageModel) func(c *gin.Context) {
 		}
 		md := make(map[string]interface{})
 		if err := c.ShouldBind(&md); err != nil {
-			badRequest(c, err.Error())
-			return
+			fmt.Println(err.Error())
+			//badRequest(c, err.Error())
+			//return
 		}
 		c.JSON(200, pg.model.getCreatePage(&params, md))
 	}
@@ -63,8 +67,9 @@ func getUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 		}
 		md := make(map[string]interface{})
 		if err := c.ShouldBind(&md); err != nil {
-			badRequest(c, err.Error())
-			return
+			fmt.Println(err.Error())
+			//badRequest(c, err.Error())
+			//return
 		}
 		c.JSON(200, pg.model.getUpdatePage(&params, md))
 	}
