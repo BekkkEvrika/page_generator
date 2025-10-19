@@ -84,7 +84,7 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 					}
 				}
 				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
+					inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
 				}
 				if model.completeNodes != nil {
 					if items, ok := model.completeNodes.GetCompleteNodes()[inp.Name]; ok {
@@ -143,7 +143,7 @@ func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface
 			inp, err := ft.makeInput()
 			if err == nil && inp != nil {
 				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
+					inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
 				}
 				if model.combo != nil {
 					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
@@ -203,7 +203,7 @@ func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface
 			inp, err := ft.makeInput()
 			if err == nil && inp != nil {
 				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault(params)[inp.Name]
+					inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
 				}
 				if model.combo != nil {
 					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
