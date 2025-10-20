@@ -186,7 +186,7 @@ func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface
 	p.Form.Submit.Text = "Ҷустуҷӯ"
 	p.Form.Submit.Source = "/" + serviceName + model.filterUrl
 	p.Form.Submit.Method = "POST"
-	p.Form.Submit.Type = "finder"
+	p.Form.Submit.Type = "loader"
 	return &p
 }
 
