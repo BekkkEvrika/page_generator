@@ -71,11 +71,20 @@ func pageModelMapping() keycloak.Manifest {
 		mod.URIs = []string{
 			"/" + serviceName + "/" + key + "/*",
 		}
-		mod.Scopes = append(mod.Scopes, keycloak.Scope{Name: "get"})
+		mod.Scopes = append(mod.Scopes, keycloak.Scope{Name: "list"})
 		if val.model.delete != nil {
-
+			mod.Scopes = append(mod.Scopes, keycloak.Scope{Name: "delete"})
 		}
+		if val.model.create != nil {
+			mod.Scopes = append(mod.Scopes, keycloak.Scope{Name: "create"})
+		}
+		if val.model.update != nil {
+			mod.Scopes = append(mod.Scopes, keycloak.Scope{Name: "update"})
+		}
+		models = append(models, mod)
 	}
+	man.Models = models
+	return man
 }
 
 func startPaging() error {
