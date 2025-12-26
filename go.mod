@@ -1,9 +1,8 @@
-module page_generator
+module github.com/BekkkEvrika/page_generator
 
 go 1.25.4
 
 require (
-	github.com/BekkkEvrika/page_generator v1.4.17
 	github.com/gin-gonic/gin v1.11.0
 	github.com/golang-jwt/jwt/v4 v4.5.2
 )
