@@ -2,6 +2,8 @@ package page_generator
 
 import (
 	"fmt"
+	"log"
+	"page_generator/keycloak"
 )
 
 type InitFunction func() error
@@ -15,9 +17,17 @@ var globalDateFormat string
 var pageSize int
 
 type PageSetting struct {
-	Service    string
-	DateFormat string
-	PageSize   int
+	Service          string
+	DateFormat       string
+	PageSize         int
+	KeyCloakSettings *KeyCloakSettings
+}
+
+type KeyCloakSettings struct {
+	BaseURL    string
+	Realm      string
+	ClientUUID string
+	Secret     string
 }
 
 func SetDefinitions(init InitFunction, setting PageSetting) error {
@@ -31,7 +41,41 @@ func SetDefinitions(init InitFunction, setting PageSetting) error {
 	if err := init(); err != nil {
 		return err
 	}
+	if setting.KeyCloakSettings == nil {
+		setting.KeyCloakSettings = &KeyCloakSettings{
+			BaseURL:    "https://admin.obukanal.ru/keycloak",
+			Realm:      "billing-realm",
+			ClientUUID: "d7e5b362-9794-42d2-b410-42a26341cdd6",
+			Secret:     "SWcD68YKthmnTWe3itqGEwBon1eP6cla",
+		}
+	}
+	return createKeycloakResources(setting.KeyCloakSettings)
+}
+
+func createKeycloakResources(cfg *KeyCloakSettings) error {
+
+	kClient := keycloak.NewKeycloakClient(cfg.BaseURL, cfg.Realm, cfg.ClientUUID, cfg.Secret)
+	authorizer := keycloak.NewKeycloakAuthorizer(kClient)
+
+	if err := authorizer.Register(pageModelMapping()); err != nil {
+		log.Fatal("authz registration failed:", err)
+	}
 	return nil
+}
+
+func pageModelMapping() keycloak.Manifest {
+	man := keycloak.Manifest{Service: serviceName}
+	var models []keycloak.Model
+	for key, val := range pgModels {
+		mod := keycloak.Model{Name: key}
+		mod.URIs = []string{
+			"/" + serviceName + "/" + key + "/*",
+		}
+		mod.Scopes = append(mod.Scopes, keycloak.Scope{Name: "get"})
+		if val.model.delete != nil {
+
+		}
+	}
 }
 
 func startPaging() error {
