@@ -3,7 +3,8 @@ package page_generator
 import (
 	"fmt"
 	"log"
-	"page_generator/keycloak"
+
+	"github.com/BekkkEvrika/page_generator/keycloak"
 )
 
 type InitFunction func() error
