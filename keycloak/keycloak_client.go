@@ -18,11 +18,11 @@ type KeycloakClient struct {
 	HTTP       *http.Client
 }
 
-func NewKeycloakClient(baseURL string, realm string, clientUUID string, secret string) *KeycloakClient {
+func NewKeycloakClient(baseURL string, realm string, clientId string, clientUUID string, secret string) *KeycloakClient {
 	token, ttl, err := GetServiceToken(
 		baseURL,
 		realm,
-		clientUUID,
+		clientId,
 		secret,
 	)
 	if err != nil {

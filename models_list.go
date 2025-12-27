@@ -27,6 +27,7 @@ type PageSetting struct {
 type KeyCloakSettings struct {
 	BaseURL    string
 	Realm      string
+	ClientId   string
 	ClientUUID string
 	Secret     string
 }
@@ -55,7 +56,7 @@ func SetDefinitions(init InitFunction, setting PageSetting) error {
 
 func createKeycloakResources(cfg *KeyCloakSettings) error {
 
-	kClient := keycloak.NewKeycloakClient(cfg.BaseURL, cfg.Realm, cfg.ClientUUID, cfg.Secret)
+	kClient := keycloak.NewKeycloakClient(cfg.BaseURL, cfg.Realm, cfg.ClientId, cfg.ClientUUID, cfg.Secret)
 	authorizer := keycloak.NewKeycloakAuthorizer(kClient)
 
 	if err := authorizer.Register(pageModelMapping()); err != nil {
