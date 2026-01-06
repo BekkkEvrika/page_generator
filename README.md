@@ -38,31 +38,28 @@
 
 ```
 {
-  "type": "типи элементи идоракунӣ", //combo-box,date-time,text-view,number-view,check-box,label,search-view,text-field, hidden, auto-complete,file-uploader
-  "name": "идентификатори элемент, бо воситаи калиди зерин сохтори json тартиб дода мешавад", 
-  "fromName": "калиди махсус элемент бо кадом калид маълумотро кабул мекунад",
-  "readOnly": false, //элемент танхо барои хондан аст
-  "text": "матне ки дар интерфейс пайдо мешавад", 
-  "maxLength": 0, // дарозии максималии элемент барои text-view,text-field, кимати максимали барои number-view
-  "minLength": 0, // дарозии минималии элемент барои text-view,text-field, кимати минимали барои number-view
-  "isDefault": false,
-  "metaData": "",
-  "metaKey": "",
-  "validMessage": "",
-  "format": "",
-  "items": [],
-  "clearNodes": null,
-  "completeNodes": null,
-  "infoSource": "",
-  "searchObject": "",
-  "defaultValue": "",
-  "searchSource": "",
-  "dataType": "",
-  "visible": "",
-  "template": "",
-  "fileSource": "",
-  "fileExtensions": null,
-  "fileMaxSize": 0
+  "type": "",          // типи элементи идоракунӣ combo-box,date-time,text-view,number-view,check-box,label,search-view,text-field, hidden, auto-complete,file-uploader
+  "name": "",          // идентификатори элемент, бо воситаи калиди зерин сохтори json тартиб дода мешавад
+  "fromName": "",      // калиди махсус элемент бо кадом калид маълумотро кабул мекунад
+  "readOnly": false,   // элемент танхо барои хондан аст
+  "text": "",         // матне ки дар интерфейс пайдо мешавад
+  "maxLength": 0,     // дарозии максималии элемент барои text-view,text-field, кимати максимали барои number-view
+  "minLength": 0,     // дарозии минималии элемент барои text-view,text-field, кимати минимали барои number-view
+  "isDefault": false, // пур кардани кимат хатми аст
+  "metaData": "",     // барои search-view истифода мешавад, калиди маълумот мета
+  "metaKey": "",      // барои search-view истифода мешавад,қимати маълумот мета
+  "validMessage": "", // хабари система хангоми пур накардани маълумоти хатми
+  "format": "",       // формати сана дар элементи date-time 
+  "items": [],         // аъзоҳои элементи combo-box
+  "searchObject": "",  // хангоми дар форма элементи search-view будан, аз кадом search-view гирифтани маълумотро нишон медихад
+  "defaultValue": "",  // қимати пешфарзи(default) элемент
+  "searchSource": "",  // суроғаи ҷустуҷӯ дар элементи search-view
+  "dataType": "",       // типи кимати элемент асосан дар элементи search-view нишон дода мешавад
+  "visible": "",       // калиди элементи checkbox ки хангоми актив будан элемент пайдо мешавад вагарна на
+  "template": "",       // шаблони махсуси гирифтани кимат
+  "fileSource": "",     // адреси махсусе, ки файлро сабт карда мешавад барои file-upoader 
+  "fileExtensions": null, // расширениеҳои файлҳо, ки барои file-uploader иҷозат дода мешавад
+  "fileMaxSize": 0      // андозаи максималии файле, ки барои file-uploader иҷозат дода мешавад бо байтҳо нишон дода мешавад
 }
 ```
 
