@@ -38,13 +38,13 @@
 
 ```
 {
-  "type": "типи элементи идоракунӣ", //
-  "name": "sender",
-  "fromName": "",
-  "readOnly": false,
-  "text": "Счет отправителья",
-  "maxLength": 0,
-  "minLength": 0,
+  "type": "типи элементи идоракунӣ", //combo-box,date-time,text-view,number-view,check-box,label,search-view,text-field, hidden, auto-complete,file-uploader
+  "name": "идентификатори элемент, бо воситаи калиди зерин сохтори json тартиб дода мешавад", 
+  "fromName": "калиди махсус элемент бо кадом калид маълумотро кабул мекунад",
+  "readOnly": false, //элемент танхо барои хондан аст
+  "text": "матне ки дар интерфейс пайдо мешавад", 
+  "maxLength": 0, // дарозии максималии элемент барои text-view,text-field, кимати максимали барои number-view
+  "minLength": 0, // дарозии минималии элемент барои text-view,text-field, кимати минимали барои number-view
   "isDefault": false,
   "metaData": "",
   "metaKey": "",
