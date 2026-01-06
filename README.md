@@ -38,35 +38,32 @@
 
 ```
 {
-            "type": "text-view",
-            "name": "sender",
-            "fromName": "",
-            "readOnly": false,
-            "access": [
-              "accounts"
-            ],
-            "text": "Счет отправителья",
-            "maxLength": 0,
-            "minLength": 0,
-            "isDefault": false,
-            "metaData": "",
-            "metaKey": "",
-            "validMessage": "",
-            "format": "",
-            "items": [],
-            "clearNodes": null,
-            "completeNodes": null,
-            "infoSource": "",
-            "searchObject": "",
-            "defaultValue": "",
-            "searchSource": "",
-            "dataType": "",
-            "visible": "",
-            "template": "",
-            "fileSource": "",
-            "fileExtensions": null,
-            "fileMaxSize": 0
-          }
+  "type": "типи элементи идоракунӣ", //
+  "name": "sender",
+  "fromName": "",
+  "readOnly": false,
+  "text": "Счет отправителья",
+  "maxLength": 0,
+  "minLength": 0,
+  "isDefault": false,
+  "metaData": "",
+  "metaKey": "",
+  "validMessage": "",
+  "format": "",
+  "items": [],
+  "clearNodes": null,
+  "completeNodes": null,
+  "infoSource": "",
+  "searchObject": "",
+  "defaultValue": "",
+  "searchSource": "",
+  "dataType": "",
+  "visible": "",
+  "template": "",
+  "fileSource": "",
+  "fileExtensions": null,
+  "fileMaxSize": 0
+}
 ```
 
 **Data Table** барои нишон додани контенти маълумот истифода бурда мешавад. Хангоми холи будани структураи **Data Table** фақат қисми **Form** нишон дода мешавад.
