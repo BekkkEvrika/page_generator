@@ -175,9 +175,9 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 						inp.ClearNodes = items
 					}
 				}
+				fmt.Println(ft.Name + " //")
 				column.Inputs = append(column.Inputs, *inp)
 			} else {
-				fmt.Println(ft.Name + " //")
 				fmt.Println(err.Error())
 			}
 		}
