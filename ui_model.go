@@ -175,11 +175,11 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 						inp.ClearNodes = items
 					}
 				}
-				fmt.Println(ft.Name + " //")
 				column.Inputs = append(column.Inputs, *inp)
 			} else {
 				fmt.Println(err.Error())
 			}
+			fmt.Println(column.Inputs)
 		}
 		if indCol == colLen {
 			p.Form.Columns = append(p.Form.Columns, column)
