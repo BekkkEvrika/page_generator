@@ -1,7 +1,6 @@
 package page_generator
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"strconv"
@@ -107,8 +106,6 @@ func postUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 			return
 		}
 		page := pg.model.getUpdatePage(&params, md)
-		bs, _ := json.Marshal(page)
-		fmt.Println(string(bs))
 		c.JSON(200, page)
 	}
 }

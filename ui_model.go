@@ -1,6 +1,7 @@
 package page_generator
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"reflect"
@@ -182,9 +183,12 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 		}
 		if indCol == colLen {
 			p.Form.Columns = append(p.Form.Columns, column)
+			bs, _ := json.Marshal(p.Form.Columns)
+			fmt.Println(string(bs))
 			column = inputs.Column{}
 			indCol = 0
 		}
+
 	}
 	p.Form.Submit.Text = "Сабт"
 	p.Form.Submit.Source = "/" + serviceName + model.updateUrl
