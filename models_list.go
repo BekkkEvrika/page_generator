@@ -28,7 +28,10 @@ func SetDefinitions(init InitFunction, setting PageSetting) error {
 		return err
 	}
 	creatorsInit()
-	return init()
+	if err := init(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func startPaging() error {
