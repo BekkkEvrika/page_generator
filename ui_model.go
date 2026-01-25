@@ -181,6 +181,9 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 			indCol = 0
 		}
 	}
+	if len(column.Inputs) > 0 {
+		p.Form.Columns = append(p.Form.Columns, column)
+	}
 	p.Form.Submit.Text = "Сабт"
 	p.Form.Submit.Source = "/" + serviceName + model.updateUrl
 	p.Form.Submit.Method = "PUT"
