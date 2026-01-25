@@ -2,9 +2,10 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"reflect"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func getListPageHandler(pg *PageModel) func(c *gin.Context) {
@@ -104,7 +105,9 @@ func postUpdatePageHandler(pg *PageModel) func(c *gin.Context) {
 			badRequest(c, err.Error())
 			return
 		}
-		c.JSON(200, pg.model.getUpdatePage(&params, md))
+		page := pg.model.getUpdatePage(&params, md)
+		fmt.Println(*page)
+		c.JSON(200, page)
 	}
 }
 

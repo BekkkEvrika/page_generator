@@ -179,7 +179,6 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 			} else {
 				fmt.Println(err.Error())
 			}
-			fmt.Println(column.Inputs)
 		}
 		if indCol == colLen {
 			p.Form.Columns = append(p.Form.Columns, column)
