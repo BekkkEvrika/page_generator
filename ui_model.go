@@ -1,7 +1,6 @@
 package page_generator
 
 import (
-	"encoding/json"
 	"fmt"
 	"math"
 	"reflect"
@@ -130,7 +129,7 @@ func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface
 func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
+	colLen := int(math.Ceil(float64(model.fieldSize) / float64(model.columnSize)))
 	indCol := 0
 	column := inputs.Column{}
 	for ind := 0; ind < model.fieldSize; ind++ {
@@ -160,11 +159,6 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 						inp.FileExtensions = items
 					}
 				}
-				if model.fileExtensions != nil {
-					if items, ok := model.fileExtensions.GetFileExtensions()[inp.Name]; ok {
-						inp.FileExtensions = items
-					}
-				}
 				if model.meta != nil {
 					if meta, ok := model.meta.GetMetaData()[inp.Name]; ok {
 						inp.MetaKey = meta.MetaKey
@@ -183,12 +177,9 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 		}
 		if indCol == colLen {
 			p.Form.Columns = append(p.Form.Columns, column)
-			bs, _ := json.Marshal(p.Form.Columns)
-			fmt.Println(string(bs))
 			column = inputs.Column{}
 			indCol = 0
 		}
-
 	}
 	p.Form.Submit.Text = "Сабт"
 	p.Form.Submit.Source = "/" + serviceName + model.updateUrl
