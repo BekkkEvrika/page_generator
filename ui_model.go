@@ -67,7 +67,7 @@ func (model *UIModel) setModel(obj interface{}, columns int) error {
 func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
+	colLen := int(math.Ceil(float64(model.fieldSize) / float64(model.columnSize)))
 	indCol := 0
 	column := inputs.Column{}
 	for ind := 0; ind < model.fieldSize; ind++ {
