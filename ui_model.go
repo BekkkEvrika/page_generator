@@ -136,7 +136,7 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 		indCol++
 		ft := model.fieldTypes[ind]
 		if !ft.pgEdit {
-			fmt.Println(ft.Name)
+			fmt.Println(ft.Name + " //")
 		}
 		if ft.pgEdit && ft.pg != "-" {
 			inp, err := ft.makeInput()
