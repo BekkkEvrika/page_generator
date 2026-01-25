@@ -1,6 +1,6 @@
 module page_generator
 
-go 1.25.4
+go 1.23.0
 
 require (
 	github.com/BekkkEvrika/page_generator v1.4.17
