@@ -135,8 +135,8 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 	for ind := 0; ind < model.fieldSize; ind++ {
 		indCol++
 		ft := model.fieldTypes[ind]
-		fmt.Println(ft.Name + " //")
 		if ft.pgEdit && ft.pg != "-" {
+			fmt.Println(ft.Name + " //")
 			inp, err := ft.makeInput()
 			if err == nil {
 				if ft.getGormPrimaryKey() {
