@@ -136,7 +136,6 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 		indCol++
 		ft := model.fieldTypes[ind]
 		if ft.pgEdit && ft.pg != "-" {
-			fmt.Println(ft.Name + " //")
 			inp, err := ft.makeInput()
 			if err == nil {
 				if ft.getGormPrimaryKey() {
@@ -177,6 +176,9 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 					}
 				}
 				column.Inputs = append(column.Inputs, *inp)
+			} else {
+				fmt.Println(ft.Name + " //")
+				fmt.Println(err.Error())
 			}
 		}
 		if indCol == colLen {
