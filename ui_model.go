@@ -2,10 +2,11 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/BekkkEvrika/page_generator/inputs"
 	"math"
 	"reflect"
 	"strconv"
+
+	"github.com/BekkkEvrika/page_generator/inputs"
 )
 
 type UIModel struct {
@@ -63,6 +64,68 @@ func (model *UIModel) setModel(obj interface{}, columns int) error {
 	return nil
 }
 
+func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface{}) *Page {
+	p := Page{}
+	p.Form = &inputs.FormExported{}
+	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
+	indCol := 0
+	column := inputs.Column{}
+	for ind := 0; ind < model.fieldSize; ind++ {
+		ft := model.fieldTypes[ind]
+		if !ft.getGormAutoInc() && ft.pg != "-" {
+			indCol++
+			inp, err := ft.makeInput()
+			if err == nil && inp != nil {
+				if model.def != nil {
+					inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
+				}
+				if model.combo != nil {
+					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
+						inp.Items = items
+					}
+				}
+				if model.completeNodes != nil {
+					if items, ok := model.completeNodes.GetCompleteNodes()[inp.Name]; ok {
+						inp.CompleteNodes = items
+					}
+				}
+				if model.fileExtensions != nil {
+					if items, ok := model.fileExtensions.GetFileExtensions()[inp.Name]; ok {
+						inp.FileExtensions = items
+					}
+				}
+				if model.meta != nil {
+					if meta, ok := model.meta.GetMetaData()[inp.Name]; ok {
+						inp.MetaKey = meta.MetaKey
+						inp.MetaData = meta.MetaData
+					}
+				}
+				if model.clearNodes != nil {
+					if items, ok := model.clearNodes.GetClearNodes()[inp.Name]; ok {
+						inp.ClearNodes = items
+					}
+				}
+				column.Inputs = append(column.Inputs, *inp)
+			}
+		}
+		if indCol == colLen {
+			p.Form.Columns = append(p.Form.Columns, column)
+			column = inputs.Column{}
+			indCol = 0
+		}
+	}
+	if len(column.Inputs) > 0 {
+		p.Form.Columns = append(p.Form.Columns, column)
+	}
+	p.Form.Submit.Text = "Сабт"
+	p.Form.Submit.Source = "/" + serviceName + model.createUrl
+	p.Form.Submit.Method = "POST"
+	p.Form.Submit.SuccessMessage = "Сабт карда шуд!"
+	p.Form.Submit.ConfirmMessage = "Шумо мехоҳед амалиётро сабт намоед?"
+	p.Form.Submit.LastAction = "success-message,close"
+	return &p
+}
+
 func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.FormExported{}
@@ -72,6 +135,9 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 	for ind := 0; ind < model.fieldSize; ind++ {
 		indCol++
 		ft := model.fieldTypes[ind]
+		if !ft.pgEdit {
+			fmt.Println(ft.Name)
+		}
 		if ft.pgEdit && ft.pg != "-" {
 			inp, err := ft.makeInput()
 			if err == nil {
@@ -187,68 +253,6 @@ func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface
 	p.Form.Submit.Source = "/" + serviceName + model.filterUrl
 	p.Form.Submit.Method = "POST"
 	p.Form.Submit.Type = "loader"
-	return &p
-}
-
-func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface{}) *Page {
-	p := Page{}
-	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
-	indCol := 0
-	column := inputs.Column{}
-	for ind := 0; ind < model.fieldSize; ind++ {
-		ft := model.fieldTypes[ind]
-		if !ft.getGormAutoInc() && ft.pg != "-" {
-			indCol++
-			inp, err := ft.makeInput()
-			if err == nil && inp != nil {
-				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
-				}
-				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
-						inp.Items = items
-					}
-				}
-				if model.completeNodes != nil {
-					if items, ok := model.completeNodes.GetCompleteNodes()[inp.Name]; ok {
-						inp.CompleteNodes = items
-					}
-				}
-				if model.fileExtensions != nil {
-					if items, ok := model.fileExtensions.GetFileExtensions()[inp.Name]; ok {
-						inp.FileExtensions = items
-					}
-				}
-				if model.meta != nil {
-					if meta, ok := model.meta.GetMetaData()[inp.Name]; ok {
-						inp.MetaKey = meta.MetaKey
-						inp.MetaData = meta.MetaData
-					}
-				}
-				if model.clearNodes != nil {
-					if items, ok := model.clearNodes.GetClearNodes()[inp.Name]; ok {
-						inp.ClearNodes = items
-					}
-				}
-				column.Inputs = append(column.Inputs, *inp)
-			}
-		}
-		if indCol == colLen {
-			p.Form.Columns = append(p.Form.Columns, column)
-			column = inputs.Column{}
-			indCol = 0
-		}
-	}
-	if len(column.Inputs) > 0 {
-		p.Form.Columns = append(p.Form.Columns, column)
-	}
-	p.Form.Submit.Text = "Сабт"
-	p.Form.Submit.Source = "/" + serviceName + model.createUrl
-	p.Form.Submit.Method = "POST"
-	p.Form.Submit.SuccessMessage = "Сабт карда шуд!"
-	p.Form.Submit.ConfirmMessage = "Шумо мехоҳед амалиётро сабт намоед?"
-	p.Form.Submit.LastAction = "success-message,close"
 	return &p
 }
 
