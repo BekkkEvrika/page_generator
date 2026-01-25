@@ -2,10 +2,11 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/BekkkEvrika/page_generator/inputs"
 	"net/url"
 	"reflect"
 	"strings"
+
+	"github.com/BekkkEvrika/page_generator/inputs"
 )
 
 const (
@@ -143,7 +144,7 @@ func (pm *PageModel) getDataPage(params *QueryParams, md map[string]interface{})
 			}
 		}
 	}
-	if pm.model.delete != nil {
+	if pm.model.delete != nil && params.ExistsAccess([]string{"delete"}) {
 		page.DataTable.Delete = inputs.Action{
 			Type:   DeleteAction,
 			Source: "/" + serviceName + pm.deleteUrl,
@@ -152,7 +153,12 @@ func (pm *PageModel) getDataPage(params *QueryParams, md map[string]interface{})
 		}
 	}
 	if pm.context != nil {
-		page.DataTable.Context = pm.context.GetContextActions()
+		tc := pm.context.GetContextActions()
+		for _, val := range tc {
+			if params.ExistsAccess(val.Permissions) {
+				page.DataTable.Context = append(page.DataTable.Context, val)
+			}
+		}
 	}
 	if pm.indexes != nil {
 		page.DataTable.Indexes = pm.indexes.GetIndexes()

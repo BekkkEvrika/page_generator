@@ -26,3 +26,22 @@ func (c *QueryParams) Query(key string) (value string) {
 	value, _ = c.GetQuery(key)
 	return
 }
+
+func (c *QueryParams) GetPermissions() []string {
+	ps := c.Claims["permissions"].([]interface{})
+	var ms []string
+	for _, val := range ps {
+		ms = append(ms, val.(string))
+	}
+	return ms
+}
+func (c *QueryParams) ExistsAccess(access []string) bool {
+	for _, val := range c.GetPermissions() {
+		for _, acc := range access {
+			if val == acc {
+				return true
+			}
+		}
+	}
+	return false
+}
