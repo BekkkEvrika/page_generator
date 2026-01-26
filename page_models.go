@@ -130,7 +130,7 @@ func (pm *PageModel) getDataPage(params *QueryParams, md map[string]interface{})
 		page.DataTable.Add = inputs.LoadAction{
 			Source: "/" + serviceName + pm.addUrl,
 			Action: loadDialog,
-			Text:   "Добавить",
+			Text:   "Сохтан",
 		}
 	}
 	if pm.model.update != nil {
@@ -140,7 +140,7 @@ func (pm *PageModel) getDataPage(params *QueryParams, md map[string]interface{})
 			page.DataTable.Edit = inputs.LoadAction{
 				Source: "/" + serviceName + pm.editUrl,
 				Action: loadDialog,
-				Text:   "Изменить",
+				Text:   "Таҳрир",
 			}
 		}
 	}
@@ -149,7 +149,7 @@ func (pm *PageModel) getDataPage(params *QueryParams, md map[string]interface{})
 			Type:   DeleteAction,
 			Source: "/" + serviceName + pm.deleteUrl,
 			Method: "DELETE",
-			Text:   "Удалить",
+			Text:   "Хориҷ",
 		}
 	}
 	if pm.context != nil {
