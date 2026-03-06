@@ -1,7 +1,7 @@
 package inputs
 
 type Input struct {
-	Type           string     `json:"type"` //combo-box,date-time,text-view,number-view,check-box,label,search-view,text-field, hidden, auto-complete,file-uploader
+	Type           string     `json:"type"` //combo-box,date-time,text-view,number-view,check-box,label,search-view,text-field, hidden, auto-complete,file-uploader,button
 	Name           string     `json:"name"`
 	FromName       string     `json:"fromName"`
 	ReadOnly       bool       `json:"readOnly"`

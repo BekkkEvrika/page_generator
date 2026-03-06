@@ -2,15 +2,14 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/BekkkEvrika/page_generator/inputs"
-	"math"
 	"reflect"
 	"strconv"
+
+	"github.com/BekkkEvrika/page_generator/inputs"
 )
 
 type UIModel struct {
 	model          interface{}
-	columnSize     int
 	fieldSize      int
 	fieldTypes     []*FieldType
 	create         ICreate
@@ -22,17 +21,22 @@ type UIModel struct {
 	fileExtensions IFileExtensions
 	meta           IMetaData
 	clearNodes     IClearNodes
+	containers     []inputs.Container
 	createUrl      string
 	updateUrl      string
 	filterUrl      string
 }
 
-func (model *UIModel) setModel(obj interface{}, columns int) error {
+func (model *UIModel) setModel(obj interface{}) error {
 	if err := model.getFieldsModel(obj); err != nil {
 		return err
 	}
 	model.model = obj
-	model.columnSize = columns
+	if val, ok := model.model.(IModel); !ok {
+		return fmt.Errorf("model must implement IModel interface")
+	} else {
+		model.containers = val.GetContainers()
+	}
 	if val, ok := model.model.(ICreate); ok {
 		model.create = val
 	}
@@ -65,12 +69,9 @@ func (model *UIModel) setModel(obj interface{}, columns int) error {
 
 func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
-	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
-	indCol := 0
-	column := inputs.Column{}
+	p.Form = &inputs.Form{}
+	p.Form.Containers = model.containers
 	for ind := 0; ind < model.fieldSize; ind++ {
-		indCol++
 		ft := model.fieldTypes[ind]
 		if ft.pgEdit && ft.pg != "-" {
 			inp, err := ft.makeInput()
@@ -96,11 +97,6 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 						inp.FileExtensions = items
 					}
 				}
-				if model.fileExtensions != nil {
-					if items, ok := model.fileExtensions.GetFileExtensions()[inp.Name]; ok {
-						inp.FileExtensions = items
-					}
-				}
 				if model.meta != nil {
 					if meta, ok := model.meta.GetMetaData()[inp.Name]; ok {
 						inp.MetaKey = meta.MetaKey
@@ -112,34 +108,27 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 						inp.ClearNodes = items
 					}
 				}
-				column.Inputs = append(column.Inputs, *inp)
+
+				// Добавляем input в контейнер только если контейнер существует в форме (с учетом вложенности)
+				if ft.pgContainer != "" {
+					container := inputs.GetContainerByKeyInSlice(p.Form.Containers, ft.pgContainer)
+					if container != nil {
+						container.Inputs = append(container.Inputs, *inp)
+					}
+				}
 			}
 		}
-		if indCol == colLen {
-			p.Form.Columns = append(p.Form.Columns, column)
-			column = inputs.Column{}
-			indCol = 0
-		}
 	}
-	p.Form.Submit.Text = "Сабт"
-	p.Form.Submit.Source = "/" + serviceName + model.updateUrl
-	p.Form.Submit.Method = "PUT"
-	p.Form.Submit.SuccessMessage = "Сабт карда шуд!"
-	p.Form.Submit.ConfirmMessage = "Шумо мехоҳед амалиётро сабт намоед?"
-	p.Form.Submit.LastAction = "success-message,close"
 	return &p
 }
 
 func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
-	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize) / float64(model.columnSize)))
-	indCol := 0
-	column := inputs.Column{}
+	p.Form = &inputs.Form{}
+	p.Form.Containers = model.containers
 	for ind := 0; ind < model.fieldSize; ind++ {
 		ft := model.fieldTypes[ind]
 		if ft.pg != "-" {
-			indCol++
 			inp, err := ft.makeInput()
 			if err == nil && inp != nil {
 				if model.def != nil {
@@ -171,35 +160,27 @@ func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface
 						inp.ClearNodes = items
 					}
 				}
-				column.Inputs = append(column.Inputs, *inp)
+
+				// Добавляем input в контейнер только если контейнер существует в форме (с учетом вложенности)
+				if ft.pgContainer != "" {
+					container := inputs.GetContainerByKeyInSlice(p.Form.Containers, ft.pgContainer)
+					if container != nil {
+						container.Inputs = append(container.Inputs, *inp)
+					}
+				}
 			}
 		}
-		if indCol == colLen {
-			p.Form.Columns = append(p.Form.Columns, column)
-			column = inputs.Column{}
-			indCol = 0
-		}
 	}
-	if len(column.Inputs) > 0 {
-		p.Form.Columns = append(p.Form.Columns, column)
-	}
-	p.Form.Submit.Text = "Ҷустуҷӯ"
-	p.Form.Submit.Source = "/" + serviceName + model.filterUrl
-	p.Form.Submit.Method = "POST"
-	p.Form.Submit.Type = "loader"
 	return &p
 }
 
 func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
-	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
-	indCol := 0
-	column := inputs.Column{}
+	p.Form = &inputs.Form{}
+	p.Form.Containers = model.containers
 	for ind := 0; ind < model.fieldSize; ind++ {
 		ft := model.fieldTypes[ind]
 		if !ft.getGormAutoInc() && ft.pg != "-" {
-			indCol++
 			inp, err := ft.makeInput()
 			if err == nil && inp != nil {
 				if model.def != nil {
@@ -231,24 +212,17 @@ func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface
 						inp.ClearNodes = items
 					}
 				}
-				column.Inputs = append(column.Inputs, *inp)
+
+				// Добавляем input в контейнер только если контейнер существует в форме (с учетом вложенности)
+				if ft.pgContainer != "" {
+					container := inputs.GetContainerByKeyInSlice(p.Form.Containers, ft.pgContainer)
+					if container != nil {
+						container.Inputs = append(container.Inputs, *inp)
+					}
+				}
 			}
 		}
-		if indCol == colLen {
-			p.Form.Columns = append(p.Form.Columns, column)
-			column = inputs.Column{}
-			indCol = 0
-		}
 	}
-	if len(column.Inputs) > 0 {
-		p.Form.Columns = append(p.Form.Columns, column)
-	}
-	p.Form.Submit.Text = "Сабт"
-	p.Form.Submit.Source = "/" + serviceName + model.createUrl
-	p.Form.Submit.Method = "POST"
-	p.Form.Submit.SuccessMessage = "Сабт карда шуд!"
-	p.Form.Submit.ConfirmMessage = "Шумо мехоҳед амалиётро сабт намоед?"
-	p.Form.Submit.LastAction = "success-message,close"
 	return &p
 }
 
@@ -295,6 +269,7 @@ func (model *UIModel) getFieldsModel(obj interface{}) error {
 		ft.setMaxLength(field.Tag.Get(pgMaxLength))
 		ft.setMinLength(field.Tag.Get(pgMinLength))
 		ft.setPgVisible(field.Tag.Get(pgVisible))
+		ft.pgContainer = field.Tag.Get(pgContainer)
 		model.fieldTypes = append(model.fieldTypes, &ft)
 	}
 	return nil

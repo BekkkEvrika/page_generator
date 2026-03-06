@@ -2,9 +2,10 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/BekkkEvrika/page_generator/inputs"
 	"strconv"
 	"strings"
+
+	"github.com/BekkkEvrika/page_generator/inputs"
 )
 
 const (
@@ -40,6 +41,7 @@ type FieldType struct {
 	pgSearchSource string
 	pgSearchObject string
 	pgDataType     string
+	pgContainer    string
 }
 
 func (f *FieldType) init() {
