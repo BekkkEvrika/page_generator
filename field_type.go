@@ -27,7 +27,6 @@ type FieldType struct {
 	PgType         string
 	PgText         string
 	PgReadOnly     bool
-	PgValid        string
 	pgMax          int
 	pgMin          int
 	pgEdit         bool
@@ -47,7 +46,6 @@ type FieldType struct {
 func (f *FieldType) init() {
 	f.PgText = ""
 	f.PgReadOnly = false
-	f.PgValid = ""
 }
 
 func (f *FieldType) makeInput() (*inputs.Input, error) {
@@ -63,13 +61,6 @@ func (f *FieldType) getFromName() string {
 		return f.pgFromName
 	}
 	return f.getName()
-}
-
-func (f *FieldType) getValidation() (bool, string) {
-	if f.PgValid != "" {
-		return true, f.PgValid
-	}
-	return false, ""
 }
 
 func (f *FieldType) getName() string {
@@ -138,13 +129,6 @@ func (f *FieldType) setPg(text string) {
 
 func (f *FieldType) setPgVisible(text string) {
 	f.pgVisible = text
-}
-
-func (f *FieldType) setPgValid(text string) {
-	if text != "" {
-		f.PgValid = text
-		f.PgText = f.PgText + "*"
-	}
 }
 
 func (f *FieldType) setPgReadOnly(read string) error {

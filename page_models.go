@@ -14,7 +14,6 @@ const (
 	pgType         = "pgType"
 	pgText         = "pgText"
 	pgReadOnly     = "pgReadOnly"
-	pgValid        = "pgValid"
 	pgMaxLength    = "pgMax"
 	pgMinLength    = "pgMin"
 	pgEdit         = "pgEdit"
@@ -276,7 +275,7 @@ func checkType(t reflect.Type) int {
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
 	}
-	timeType := reflect.TypeOf(Date{})
+	timeType := reflect.TypeOf(DateTime{})
 	switch t.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
 		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,

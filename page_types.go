@@ -75,3 +75,11 @@ type IClearNodes interface {
 type IEditData interface {
 	GetEditPage() inputs.LoadAction
 }
+
+type IFormValidation interface {
+	GetFormValidation() map[string]inputs.FieldValidation
+}
+
+type IFormVisibility interface {
+	GetFormValidation() map[string][]inputs.Rule
+}

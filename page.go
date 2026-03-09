@@ -3,8 +3,12 @@ package page_generator
 import "github.com/BekkkEvrika/page_generator/inputs"
 
 type Page struct {
-	Form      *inputs.Form      `json:"form"`
-	DataTable *inputs.DataTable `json:"dataTable"`
+	FormId      string            `json:"formId"`
+	Version     string            `json:"version"`
+	Title       string            `json:"title"`
+	Description string            `json:"description"`
+	Form        *inputs.Form      `json:"form"`
+	DataTable   *inputs.DataTable `json:"dataTable"`
 }
 
 func (p *Page) Init() {
