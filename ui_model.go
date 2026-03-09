@@ -12,6 +12,7 @@ type UIModel struct {
 	model          interface{}
 	fieldSize      int
 	fieldTypes     []*FieldType
+	container      IModel
 	create         ICreate
 	update         IUpdate
 	delete         IDelete
@@ -21,7 +22,6 @@ type UIModel struct {
 	fileExtensions IFileExtensions
 	meta           IMetaData
 	clearNodes     IClearNodes
-	containers     []inputs.Container
 	createUrl      string
 	updateUrl      string
 	filterUrl      string
@@ -35,7 +35,7 @@ func (model *UIModel) setModel(obj interface{}) error {
 	if val, ok := model.model.(IModel); !ok {
 		return fmt.Errorf("model must implement IModel interface")
 	} else {
-		model.containers = val.GetContainers()
+		model.container = val
 	}
 	if val, ok := model.model.(ICreate); ok {
 		model.create = val
@@ -70,7 +70,7 @@ func (model *UIModel) setModel(obj interface{}) error {
 func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.Form{}
-	p.Form.Containers = model.containers
+	p.Form.Containers = model.container.GetContainers()
 	for ind := 0; ind < model.fieldSize; ind++ {
 		ft := model.fieldTypes[ind]
 		if ft.pgEdit && ft.pg != "-" {
@@ -125,7 +125,7 @@ func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface
 func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.Form{}
-	p.Form.Containers = model.containers
+	p.Form.Containers = model.container.GetContainers()
 	for ind := 0; ind < model.fieldSize; ind++ {
 		ft := model.fieldTypes[ind]
 		if ft.pg != "-" {
@@ -177,7 +177,7 @@ func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface
 func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.Form{}
-	p.Form.Containers = model.containers
+	p.Form.Containers = model.container.GetContainers()
 	for ind := 0; ind < model.fieldSize; ind++ {
 		ft := model.fieldTypes[ind]
 		if !ft.getGormAutoInc() && ft.pg != "-" {
