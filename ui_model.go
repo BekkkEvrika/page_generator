@@ -177,6 +177,7 @@ func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface
 func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface{}) *Page {
 	p := Page{}
 	p.Form = &inputs.Form{}
+	fmt.Println("ssdsdg")
 	p.Form.Containers = model.container.GetContainers()
 	for ind := 0; ind < model.fieldSize; ind++ {
 		ft := model.fieldTypes[ind]
