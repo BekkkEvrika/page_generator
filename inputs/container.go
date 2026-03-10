@@ -7,8 +7,8 @@ type Container struct {
 	Align          string      `json:"align"`     // "start" | "center" | "end" | "between" - оба стороны | "stretch" - растянуть по всей высоте
 	GridColumns    int         `json:"gridColumns,omitempty"`
 	Title          string      `json:"title"`
-	Fields         []Input     `json:"fields"`
-	Containers     []Container `json:"containers"`
+	Fields         []Input     `json:"fields,omitempty"`
+	Containers     []Container `json:"containers,omitempty"`
 	VisibilityRule *Rule       `json:"visibilityRule,omitempty"`
 }
 
