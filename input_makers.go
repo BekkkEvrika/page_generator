@@ -27,7 +27,7 @@ func creatorsInit() {
 
 func button(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:        types[5],
+		Type:        types[11],
 		Name:        f.getName(),
 		Placeholder: f.PgText,
 	}
@@ -36,7 +36,7 @@ func button(f *FieldType) *inputs.Input {
 
 func submit(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:        types[5],
+		Type:        types[12],
 		Name:        f.getName(),
 		Placeholder: f.PgText,
 	}
@@ -95,7 +95,7 @@ func checkBox(f *FieldType) *inputs.Input {
 
 func label(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:        types[5],
+		Type:        types[6],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
 		Placeholder: f.PgText,
@@ -125,7 +125,7 @@ func fileUploader(f *FieldType) *inputs.Input {
 
 func hidden(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:       types[8],
+		Type:       types[9],
 		Name:       f.getName(),
 		FromName:   f.getFromName(),
 		DataType:   f.pgDataType,
@@ -136,7 +136,7 @@ func hidden(f *FieldType) *inputs.Input {
 
 func searchView(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:        types[6],
+		Type:        types[7],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
 		Search:      f.pgSearchSource,
@@ -148,7 +148,7 @@ func searchView(f *FieldType) *inputs.Input {
 
 func textView(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:        types[2],
+		Type:        types[3],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
 		ReadOnly:    f.PgReadOnly,
@@ -160,7 +160,7 @@ func textView(f *FieldType) *inputs.Input {
 
 func textField(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:        types[7],
+		Type:        types[8],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
 		ReadOnly:    f.PgReadOnly,

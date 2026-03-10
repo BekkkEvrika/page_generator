@@ -1,15 +1,15 @@
 package inputs
 
 type Container struct {
-	Key            string          `json:"id"`
-	Direction      string          `json:"direction"` // horizontal, vertical
-	Gap            int             `json:"gap"`       //
-	Align          string          `json:"align"`     // "start" | "center" | "end" | "between" - оба стороны | "stretch" - растянуть по всей высоте
-	GridColumns    int             `json:"gridColumns,omitempty"`
-	Title          string          `json:"title"`
-	Fields         []Input         `json:"fields"`
-	Containers     []Container     `json:"containers"`
-	VisibilityRule *VisibilityRule `json:"visibilityRule,omitempty"`
+	Key            string      `json:"id"`
+	Direction      string      `json:"direction"` // horizontal, vertical
+	Gap            int         `json:"gap"`       //
+	Align          string      `json:"align"`     // "start" | "center" | "end" | "between" - оба стороны | "stretch" - растянуть по всей высоте
+	GridColumns    int         `json:"gridColumns,omitempty"`
+	Title          string      `json:"title"`
+	Fields         []Input     `json:"fields"`
+	Containers     []Container `json:"containers"`
+	VisibilityRule *Rule       `json:"visibilityRule,omitempty"`
 }
 
 // GetContainerByKey ищет контейнер по ключу в текущем контейнере и его потомках (рекурсивно)
