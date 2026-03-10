@@ -1,6 +1,7 @@
 package inputs
 
 type Input struct {
+	Id              string           `json:"id"`
 	Type            string           `json:"type"`
 	Name            string           `json:"name,omitempty"`
 	FromName        string           `json:"fromName,omitempty"`

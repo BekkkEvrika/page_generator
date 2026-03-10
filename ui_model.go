@@ -123,6 +123,7 @@ func (model *UIModel) buildPage(params *QueryParams, md map[string]interface{}, 
 		if err != nil || inp == nil {
 			continue
 		}
+		inp.Id = inp.Name
 		model.enrichInput(inp, params, md)
 		if transform != nil {
 			transform(ft, inp)
