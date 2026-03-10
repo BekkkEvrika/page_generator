@@ -175,13 +175,13 @@ func (f *FieldType) setPgType(tp string) error {
 	} else {
 		switch f.Type {
 		case number:
-			f.PgType = types[3]
+			f.PgType = types[4]
 			f.pgDataType = "number"
 		case text:
 			if f.getGormSize() > 60 {
-				f.PgType = types[7]
+				f.PgType = types[8]
 			} else {
-				f.PgType = types[2]
+				f.PgType = types[3]
 			}
 			f.pgDataType = "string"
 		case date:
@@ -191,7 +191,7 @@ func (f *FieldType) setPgType(tp string) error {
 				f.PgType = types[2]
 			}
 		case boolean:
-			f.PgType = types[4]
+			f.PgType = types[5]
 		case -1:
 			return fmt.Errorf(" field type not found: %s", f.Name)
 		}
