@@ -71,7 +71,7 @@ func dateF(f *FieldType) *inputs.Input {
 
 func numberView(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:        types[3],
+		Type:        types[4],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
 		ReadOnly:    f.PgReadOnly,
