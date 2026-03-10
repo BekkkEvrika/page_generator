@@ -25,6 +25,9 @@ type IExports interface {
 
 type IGetList interface {
 	GetList(params *QueryParams) error
+}
+
+type IFilter interface {
 	Filter(obj interface{}, params *QueryParams) error
 }
 
@@ -46,6 +49,10 @@ type IDelete interface {
 
 type IDefault interface {
 	GetDefault(params *QueryParams, mp map[string]interface{}) map[string]string
+}
+
+type IModel interface {
+	GetContainers() []inputs.Container
 }
 
 type IComboBox interface {
@@ -70,4 +77,20 @@ type IClearNodes interface {
 
 type IEditData interface {
 	GetEditPage() inputs.LoadAction
+}
+
+type IFormValidation interface {
+	GetFormValidation() map[string]inputs.FieldValidation // validation uchun
+}
+
+type IFormVisibility interface {
+	GetFormValidation() map[string][]inputs.Rule // rule visibility uchun
+}
+
+type IFieldActions interface {
+	GetFieldActions() map[string][]inputs.FieldAction // field action uchun
+}
+
+type IFileConfig interface {
+	GetFileConfig() map[string]inputs.FileConfig // file config uchun
 }

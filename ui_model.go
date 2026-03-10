@@ -2,37 +2,42 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/BekkkEvrika/page_generator/inputs"
-	"math"
 	"reflect"
 	"strconv"
+
+	"github.com/BekkkEvrika/page_generator/inputs"
 )
 
 type UIModel struct {
-	model          interface{}
-	columnSize     int
-	fieldSize      int
-	fieldTypes     []*FieldType
-	create         ICreate
-	update         IUpdate
-	delete         IDelete
-	def            IDefault
-	combo          IComboBox
-	completeNodes  ICompleteNodes
-	fileExtensions IFileExtensions
-	meta           IMetaData
-	clearNodes     IClearNodes
-	createUrl      string
-	updateUrl      string
-	filterUrl      string
+	model        interface{}
+	fieldSize    int
+	fieldTypes   []*FieldType
+	container    IModel
+	create       ICreate
+	update       IUpdate
+	delete       IDelete
+	def          IDefault
+	combo        IComboBox
+	validation   IFormValidation
+	visibility   IFormVisibility
+	fieldActions IFieldActions
+	fileConfig   IFileConfig
+	meta         IMetaData
+	createUrl    string
+	updateUrl    string
+	filterUrl    string
 }
 
-func (model *UIModel) setModel(obj interface{}, columns int) error {
+func (model *UIModel) setModel(obj interface{}) error {
 	if err := model.getFieldsModel(obj); err != nil {
 		return err
 	}
 	model.model = obj
-	model.columnSize = columns
+	if val, ok := model.model.(IModel); !ok {
+		return fmt.Errorf("model must implement IModel interface")
+	} else {
+		model.container = val
+	}
 	if val, ok := model.model.(ICreate); ok {
 		model.create = val
 	}
@@ -48,217 +53,118 @@ func (model *UIModel) setModel(obj interface{}, columns int) error {
 	if val, ok := model.model.(IComboBox); ok {
 		model.combo = val
 	}
-	if val, ok := model.model.(ICompleteNodes); ok {
-		model.completeNodes = val
-	}
-	if val, ok := model.model.(IFileExtensions); ok {
-		model.fileExtensions = val
-	}
 	if val, ok := model.model.(IMetaData); ok {
 		model.meta = val
 	}
-	if val, ok := model.model.(IClearNodes); ok {
-		model.clearNodes = val
+	if val, ok := model.model.(IFormValidation); ok {
+		model.validation = val
+	}
+	if val, ok := model.model.(IFormVisibility); ok {
+		model.visibility = val
+	}
+	if val, ok := model.model.(IFieldActions); ok {
+		model.fieldActions = val
+	}
+	if val, ok := model.model.(IFileConfig); ok {
+		model.fileConfig = val
 	}
 	return nil
 }
 
-func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface{}) *Page {
-	p := Page{}
-	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
-	indCol := 0
-	column := inputs.Column{}
-	for ind := 0; ind < model.fieldSize; ind++ {
-		indCol++
-		ft := model.fieldTypes[ind]
-		if ft.pgEdit && ft.pg != "-" {
-			inp, err := ft.makeInput()
-			if err == nil {
-				if ft.getGormPrimaryKey() {
-					inp.ReadOnly = true
-				}
-				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
-						inp.Items = items
-					}
-				}
-				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
-				}
-				if model.completeNodes != nil {
-					if items, ok := model.completeNodes.GetCompleteNodes()[inp.Name]; ok {
-						inp.CompleteNodes = items
-					}
-				}
-				if model.fileExtensions != nil {
-					if items, ok := model.fileExtensions.GetFileExtensions()[inp.Name]; ok {
-						inp.FileExtensions = items
-					}
-				}
-				if model.fileExtensions != nil {
-					if items, ok := model.fileExtensions.GetFileExtensions()[inp.Name]; ok {
-						inp.FileExtensions = items
-					}
-				}
-				if model.meta != nil {
-					if meta, ok := model.meta.GetMetaData()[inp.Name]; ok {
-						inp.MetaKey = meta.MetaKey
-						inp.MetaData = meta.MetaData
-					}
-				}
-				if model.clearNodes != nil {
-					if items, ok := model.clearNodes.GetClearNodes()[inp.Name]; ok {
-						inp.ClearNodes = items
-					}
-				}
-				column.Inputs = append(column.Inputs, *inp)
-			}
-		}
-		if indCol == colLen {
-			p.Form.Columns = append(p.Form.Columns, column)
-			column = inputs.Column{}
-			indCol = 0
+// enrichInput заполняет поля inp данными из интерфейсов (combo, default, validation и т.д.)
+func (model *UIModel) enrichInput(inp *inputs.Input, params *QueryParams, md map[string]interface{}) {
+	if model.combo != nil {
+		if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
+			inp.Options = items
 		}
 	}
-	p.Form.Submit.Text = "Сабт"
-	p.Form.Submit.Source = "/" + serviceName + model.updateUrl
-	p.Form.Submit.Method = "PUT"
-	p.Form.Submit.SuccessMessage = "Сабт карда шуд!"
-	p.Form.Submit.ConfirmMessage = "Шумо мехоҳед амалиётро сабт намоед?"
-	p.Form.Submit.LastAction = "success-message,close"
+	if model.def != nil {
+		inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
+	}
+	if model.validation != nil {
+		if valid, ok := model.validation.GetFormValidation()[inp.Name]; ok {
+			inp.Validation = &valid
+		}
+	}
+	if model.visibility != nil {
+		if valid, ok := model.visibility.GetFormValidation()[inp.Name]; ok {
+			inp.VisibilityRules = valid
+		}
+	}
+	if model.fieldActions != nil {
+		if valid, ok := model.fieldActions.GetFieldActions()[inp.Name]; ok {
+			inp.FieldActions = valid
+		}
+	}
+	if model.fileConfig != nil {
+		if valid, ok := model.fileConfig.GetFileConfig()[inp.Name]; ok {
+			inp.FileConfig = &valid
+		}
+	}
+	if model.meta != nil {
+		if meta, ok := model.meta.GetMetaData()[inp.Name]; ok {
+			inp.MetaKey = meta.MetaKey
+			inp.MetaData = meta.MetaData
+		}
+	}
+}
+
+// buildPage строит страницу с формой, фильтруя поля через accept(ft)
+func (model *UIModel) buildPage(params *QueryParams, md map[string]interface{}, accept func(ft *FieldType) bool, transform func(ft *FieldType, inp *inputs.Input)) *Page {
+	p := Page{}
+	p.Form = &inputs.Form{}
+	p.Form.Containers = model.container.GetContainers()
+	for ind := 0; ind < model.fieldSize; ind++ {
+		ft := model.fieldTypes[ind]
+		if !accept(ft) {
+			continue
+		}
+		inp, err := ft.makeInput()
+		if err != nil || inp == nil {
+			continue
+		}
+		inp.Id = inp.Name
+		inp.Label = inp.Placeholder
+		model.enrichInput(inp, params, md)
+		if transform != nil {
+			transform(ft, inp)
+		}
+		if ft.pgContainer != "" {
+			if container := inputs.GetContainerByKeyInSlice(p.Form.Containers, ft.pgContainer); container != nil {
+				container.Fields = append(container.Fields, *inp)
+			}
+		}
+	}
 	return &p
+}
+
+func (model *UIModel) getUpdatePage(params *QueryParams, md map[string]interface{}) *Page {
+	return model.buildPage(params, md, func(ft *FieldType) bool {
+		return ft.pgEdit && ft.pg != "-"
+	}, func(ft *FieldType, inp *inputs.Input) {
+		if ft.getGormPrimaryKey() {
+			inp.ReadOnly = true
+		}
+	})
 }
 
 func (model *UIModel) getFilterPage(params *QueryParams, md map[string]interface{}) *Page {
-	p := Page{}
-	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize) / float64(model.columnSize)))
-	indCol := 0
-	column := inputs.Column{}
-	for ind := 0; ind < model.fieldSize; ind++ {
-		ft := model.fieldTypes[ind]
-		if ft.pg != "-" {
-			indCol++
-			inp, err := ft.makeInput()
-			if err == nil && inp != nil {
-				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
-				}
-				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
-						inp.Items = items
-					}
-				}
-				if model.completeNodes != nil {
-					if items, ok := model.completeNodes.GetCompleteNodes()[inp.Name]; ok {
-						inp.CompleteNodes = items
-					}
-				}
-				if model.fileExtensions != nil {
-					if items, ok := model.fileExtensions.GetFileExtensions()[inp.Name]; ok {
-						inp.FileExtensions = items
-					}
-				}
-				if model.meta != nil {
-					if meta, ok := model.meta.GetMetaData()[inp.Name]; ok {
-						inp.MetaKey = meta.MetaKey
-						inp.MetaData = meta.MetaData
-					}
-				}
-				if model.clearNodes != nil {
-					if items, ok := model.clearNodes.GetClearNodes()[inp.Name]; ok {
-						inp.ClearNodes = items
-					}
-				}
-				column.Inputs = append(column.Inputs, *inp)
-			}
-		}
-		if indCol == colLen {
-			p.Form.Columns = append(p.Form.Columns, column)
-			column = inputs.Column{}
-			indCol = 0
-		}
-	}
-	if len(column.Inputs) > 0 {
-		p.Form.Columns = append(p.Form.Columns, column)
-	}
-	p.Form.Submit.Text = "Ҷустуҷӯ"
-	p.Form.Submit.Source = "/" + serviceName + model.filterUrl
-	p.Form.Submit.Method = "POST"
-	p.Form.Submit.Type = "loader"
-	return &p
+	return model.buildPage(params, md, func(ft *FieldType) bool {
+		return ft.pg != "-"
+	}, nil)
 }
 
 func (model *UIModel) getCreatePage(params *QueryParams, md map[string]interface{}) *Page {
-	p := Page{}
-	p.Form = &inputs.FormExported{}
-	colLen := int(math.Ceil(float64(model.fieldSize / model.columnSize)))
-	indCol := 0
-	column := inputs.Column{}
-	for ind := 0; ind < model.fieldSize; ind++ {
-		ft := model.fieldTypes[ind]
-		if !ft.getGormAutoInc() && ft.pg != "-" {
-			indCol++
-			inp, err := ft.makeInput()
-			if err == nil && inp != nil {
-				if model.def != nil {
-					inp.DefaultValue = model.def.GetDefault(params, md)[inp.Name]
-				}
-				if model.combo != nil {
-					if items, ok := model.combo.GetComboItems(params, md)[inp.Name]; ok {
-						inp.Items = items
-					}
-				}
-				if model.completeNodes != nil {
-					if items, ok := model.completeNodes.GetCompleteNodes()[inp.Name]; ok {
-						inp.CompleteNodes = items
-					}
-				}
-				if model.fileExtensions != nil {
-					if items, ok := model.fileExtensions.GetFileExtensions()[inp.Name]; ok {
-						inp.FileExtensions = items
-					}
-				}
-				if model.meta != nil {
-					if meta, ok := model.meta.GetMetaData()[inp.Name]; ok {
-						inp.MetaKey = meta.MetaKey
-						inp.MetaData = meta.MetaData
-					}
-				}
-				if model.clearNodes != nil {
-					if items, ok := model.clearNodes.GetClearNodes()[inp.Name]; ok {
-						inp.ClearNodes = items
-					}
-				}
-				column.Inputs = append(column.Inputs, *inp)
-			}
-		}
-		if indCol == colLen {
-			p.Form.Columns = append(p.Form.Columns, column)
-			column = inputs.Column{}
-			indCol = 0
-		}
-	}
-	if len(column.Inputs) > 0 {
-		p.Form.Columns = append(p.Form.Columns, column)
-	}
-	p.Form.Submit.Text = "Сабт"
-	p.Form.Submit.Source = "/" + serviceName + model.createUrl
-	p.Form.Submit.Method = "POST"
-	p.Form.Submit.SuccessMessage = "Сабт карда шуд!"
-	p.Form.Submit.ConfirmMessage = "Шумо мехоҳед амалиётро сабт намоед?"
-	p.Form.Submit.LastAction = "success-message,close"
-	return &p
+	return model.buildPage(params, md, func(ft *FieldType) bool {
+		return !ft.getGormAutoInc() && ft.pg != "-"
+	}, nil)
 }
 
 func (model *UIModel) getFieldsModel(obj interface{}) error {
 	val := reflect.ValueOf(obj)
-	// Если указатель — разыменуем
 	if val.Kind() == reflect.Ptr {
 		val = val.Elem()
 	}
-	// Проверка: это struct?
 	if val.Kind() != reflect.Struct {
 		return fmt.Errorf("Не структура ")
 	}
@@ -291,10 +197,10 @@ func (model *UIModel) getFieldsModel(obj interface{}) error {
 		if err := ft.setPgEdit(field.Tag.Get(pgEdit)); err != nil {
 			return err
 		}
-		ft.setPgValid(field.Tag.Get(pgValid))
 		ft.setMaxLength(field.Tag.Get(pgMaxLength))
 		ft.setMinLength(field.Tag.Get(pgMinLength))
 		ft.setPgVisible(field.Tag.Get(pgVisible))
+		ft.pgContainer = field.Tag.Get(pgContainer)
 		model.fieldTypes = append(model.fieldTypes, &ft)
 	}
 	return nil

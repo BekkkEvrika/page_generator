@@ -14,12 +14,14 @@ var pgModels map[string]*PageModel // page models list
 var serviceName string
 
 var globalDateFormat string
+var globalTimeFormat string
 
 var pageSize int
 
 type PageSetting struct {
 	Service          string
 	DateFormat       string
+	TimeFormat       string
 	PageSize         int
 	KeyCloakSettings *KeyCloakSettings
 }
@@ -35,6 +37,7 @@ type KeyCloakSettings struct {
 func SetDefinitions(init InitFunction, setting PageSetting) error {
 	serviceName = setting.Service
 	globalDateFormat = setting.DateFormat
+	globalTimeFormat = setting.TimeFormat
 	pageSize = setting.PageSize
 	if err := startPaging(); err != nil {
 		return err
@@ -94,6 +97,9 @@ func startPaging() error {
 		return fmt.Errorf("service name is empty ")
 	}
 	if globalDateFormat == "" {
+		return fmt.Errorf("global date format is empty")
+	}
+	if globalTimeFormat == "" {
 		return fmt.Errorf("global date format is empty")
 	}
 	if pgModels == nil {

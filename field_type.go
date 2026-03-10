@@ -2,9 +2,10 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/BekkkEvrika/page_generator/inputs"
 	"strconv"
 	"strings"
+
+	"github.com/BekkkEvrika/page_generator/inputs"
 )
 
 const (
@@ -26,7 +27,6 @@ type FieldType struct {
 	PgType         string
 	PgText         string
 	PgReadOnly     bool
-	PgValid        string
 	pgMax          int
 	pgMin          int
 	pgEdit         bool
@@ -40,12 +40,12 @@ type FieldType struct {
 	pgSearchSource string
 	pgSearchObject string
 	pgDataType     string
+	pgContainer    string
 }
 
 func (f *FieldType) init() {
 	f.PgText = ""
 	f.PgReadOnly = false
-	f.PgValid = ""
 }
 
 func (f *FieldType) makeInput() (*inputs.Input, error) {
@@ -61,13 +61,6 @@ func (f *FieldType) getFromName() string {
 		return f.pgFromName
 	}
 	return f.getName()
-}
-
-func (f *FieldType) getValidation() (bool, string) {
-	if f.PgValid != "" {
-		return true, f.PgValid
-	}
-	return false, ""
 }
 
 func (f *FieldType) getName() string {
@@ -138,13 +131,6 @@ func (f *FieldType) setPgVisible(text string) {
 	f.pgVisible = text
 }
 
-func (f *FieldType) setPgValid(text string) {
-	if text != "" {
-		f.PgValid = text
-		f.PgText = f.PgText + "*"
-	}
-}
-
 func (f *FieldType) setPgReadOnly(read string) error {
 	if read == fTrue {
 		f.PgReadOnly = true
@@ -189,13 +175,13 @@ func (f *FieldType) setPgType(tp string) error {
 	} else {
 		switch f.Type {
 		case number:
-			f.PgType = types[3]
+			f.PgType = types[4]
 			f.pgDataType = "number"
 		case text:
 			if f.getGormSize() > 60 {
-				f.PgType = types[7]
+				f.PgType = types[8]
 			} else {
-				f.PgType = types[2]
+				f.PgType = types[3]
 			}
 			f.pgDataType = "string"
 		case date:
@@ -205,7 +191,7 @@ func (f *FieldType) setPgType(tp string) error {
 				f.PgType = types[2]
 			}
 		case boolean:
-			f.PgType = types[4]
+			f.PgType = types[5]
 		case -1:
 			return fmt.Errorf(" field type not found: %s", f.Name)
 		}

@@ -2,10 +2,11 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/BekkkEvrika/page_generator/inputs"
 	"net/url"
 	"reflect"
 	"strings"
+
+	"github.com/BekkkEvrika/page_generator/inputs"
 )
 
 const (
@@ -13,7 +14,6 @@ const (
 	pgType         = "pgType"
 	pgText         = "pgText"
 	pgReadOnly     = "pgReadOnly"
-	pgValid        = "pgValid"
 	pgMaxLength    = "pgMax"
 	pgMinLength    = "pgMin"
 	pgEdit         = "pgEdit"
@@ -24,6 +24,7 @@ const (
 	pgFromName     = "pgFromName"
 	pgSearchSource = "pgSearch"
 	pgSearchObject = "pgSName"
+	pgContainer    = "pgContainer"
 )
 
 const (
@@ -74,7 +75,7 @@ func (pm *PageModel) getOnlyTable(params *QueryParams, md map[string]interface{}
 		page = pm.filterModel.getFilterPage(params, md)
 	}
 	if pm.getList != nil {
-		page.DataTable = &inputs.ExpDataTable{}
+		page.DataTable = &inputs.DataTable{}
 		page.DataTable.DefaultUrl = "/" + serviceName + pm.defaultUrl
 		if pm.queryParams != nil {
 			query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
@@ -104,7 +105,7 @@ func (pm *PageModel) getDataPage(params *QueryParams, md map[string]interface{})
 		page = pm.filterModel.getFilterPage(params, md)
 	}
 	if pm.getList != nil {
-		page.DataTable = &inputs.ExpDataTable{}
+		page.DataTable = &inputs.DataTable{}
 		page.DataTable.DefaultUrl = "/" + serviceName + pm.defaultUrl
 		if pm.queryParams != nil {
 			query, _ := pm.setQueryParams(page.DataTable.DefaultUrl)
@@ -180,9 +181,9 @@ func (pm *PageModel) SetListModel(obj interface{}) error {
 	return nil
 }
 
-func (pm *PageModel) SetFilterModel(obj interface{}, columns int) error {
+func (pm *PageModel) SetFilterModel(obj interface{}) error {
 	pm.filterModel = &UIModel{}
-	if err := pm.filterModel.setModel(obj, columns); err != nil {
+	if err := pm.filterModel.setModel(obj); err != nil {
 		return err
 	}
 	pm.filterType = reflect.TypeOf(obj)
@@ -212,9 +213,9 @@ func (pm *PageModel) SetTableModel(obj interface{}) error {
 	return nil
 }
 
-func (pm *PageModel) SetModel(obj interface{}, columns int) error {
+func (pm *PageModel) SetModel(obj interface{}) error {
 	pm.model = &UIModel{}
-	if err := pm.model.setModel(obj, columns); err != nil {
+	if err := pm.model.setModel(obj); err != nil {
 		return err
 	}
 	pm.modelType = reflect.TypeOf(obj)
@@ -274,7 +275,7 @@ func checkType(t reflect.Type) int {
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
 	}
-	timeType := reflect.TypeOf(Date{})
+	timeType := reflect.TypeOf(DateTime{})
 	switch t.Kind() {
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
 		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,

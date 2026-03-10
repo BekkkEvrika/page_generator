@@ -47,28 +47,8 @@ func (d Date) Value() (driver.Value, error) {
 func (d *Date) Scan(value interface{}) error {
 	t, ok := value.(time.Time)
 	if !ok {
-		return fmt.Errorf("Date: cannot scan type %T into Date ", value)
+		return fmt.Errorf("DateTime: cannot scan type %T into DateTime ", value)
 	}
 	*d = Date(t)
 	return nil
-}
-
-func javaToGoTimeFormat(javaFmt string) string {
-	replacer := strings.NewReplacer(
-		"yyyy", "2006",
-		"yy", "06",
-		"MM", "01",
-		"dd", "02",
-		"HH", "15",
-		"hh", "03",
-		"mm", "04",
-		"ss", "05",
-		"SSS", ".000",
-		"a", "PM",
-		"Z", "-0700",
-		"XXX", "-07:00",
-		"XX", "-0700",
-		"X", "-07",
-	)
-	return replacer.Replace(javaFmt)
 }
