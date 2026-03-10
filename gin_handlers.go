@@ -2,9 +2,10 @@ package page_generator
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"reflect"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func getListPageHandler(pg *PageModel) func(c *gin.Context) {
@@ -139,7 +140,7 @@ func postFilterDataHandler(pg *PageModel) func(c *gin.Context) {
 			badRequest(c, "Bad request: "+err.Error())
 			return
 		}
-		listInt, ok := list.(IGetList)
+		listInt, ok := list.(IFilter)
 		if !ok {
 			badRequest(c, "internal error: list does not implement Filterable")
 			return
