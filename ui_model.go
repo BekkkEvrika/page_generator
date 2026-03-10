@@ -124,6 +124,7 @@ func (model *UIModel) buildPage(params *QueryParams, md map[string]interface{}, 
 			continue
 		}
 		inp.Id = inp.Name
+		inp.Label = inp.Placeholder
 		model.enrichInput(inp, params, md)
 		if transform != nil {
 			transform(ft, inp)

@@ -4,6 +4,7 @@ type Input struct {
 	Id              string           `json:"id"`
 	Type            string           `json:"type"`
 	Name            string           `json:"name,omitempty"`
+	Label           string           `json:"label,omitempty"`
 	FromName        string           `json:"fromName,omitempty"`
 	ReadOnly        bool             `json:"readOnly,omitempty"`
 	Placeholder     string           `json:"placeholder,omitempty"`
