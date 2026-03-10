@@ -3,7 +3,6 @@ package page_generator
 import (
 	"fmt"
 	"reflect"
-	"strconv"
 
 	"github.com/BekkkEvrika/page_generator/inputs"
 )
@@ -87,7 +86,7 @@ func (model *UIModel) enrichInput(inp *inputs.Input, params *QueryParams, md map
 		}
 	}
 	if model.visibility != nil {
-		if valid, ok := model.visibility.GetFormValidation()[inp.Name]; ok {
+		if valid, ok := model.visibility.GetFormVisibility()[inp.Name]; ok {
 			inp.VisibilityRules = valid
 		}
 	}
@@ -181,12 +180,9 @@ func (model *UIModel) getFieldsModel(obj interface{}) error {
 			continue
 		}
 		model.fieldSize++
-		ft.pgTemplate = field.Tag.Get(pgTemplate)
 		ft.pgSearchSource = field.Tag.Get(pgSearchSource)
 		ft.pgSearchObject = field.Tag.Get(pgSearchObject)
 		ft.pgFromName = field.Tag.Get(pgFromName)
-		ft.pgFileSource = field.Tag.Get(pgFileSource)
-		ft.pgFileMaxSize, _ = strconv.Atoi(field.Tag.Get(pgFileMaxSize))
 		if err := ft.setPgType(field.Tag.Get(pgType)); err != nil {
 			return err
 		}
@@ -197,9 +193,6 @@ func (model *UIModel) getFieldsModel(obj interface{}) error {
 		if err := ft.setPgEdit(field.Tag.Get(pgEdit)); err != nil {
 			return err
 		}
-		ft.setMaxLength(field.Tag.Get(pgMaxLength))
-		ft.setMinLength(field.Tag.Get(pgMinLength))
-		ft.setPgVisible(field.Tag.Get(pgVisible))
 		ft.pgContainer = field.Tag.Get(pgContainer)
 		model.fieldTypes = append(model.fieldTypes, &ft)
 	}

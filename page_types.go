@@ -84,7 +84,7 @@ type IFormValidation interface {
 }
 
 type IFormVisibility interface {
-	GetFormValidation() map[string][]inputs.Rule // rule visibility uchun
+	GetFormVisibility() map[string][]inputs.Rule
 }
 
 type IFieldActions interface {

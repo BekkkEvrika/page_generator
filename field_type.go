@@ -27,15 +27,8 @@ type FieldType struct {
 	PgType         string
 	PgText         string
 	PgReadOnly     bool
-	pgMax          int
-	pgMin          int
 	pgEdit         bool
-	pgVisible      string
-	pgTemplate     string
 	pg             string
-	pgFileSource   string
-	pgFileExt      string
-	pgFileMaxSize  int
 	pgFromName     string
 	pgSearchSource string
 	pgSearchObject string
@@ -113,22 +106,8 @@ func (f *FieldType) getGormType() string {
 	return ""
 }
 
-func (f *FieldType) setMaxLength(text string) {
-	num, _ := strconv.Atoi(text)
-	f.pgMax = num
-}
-
-func (f *FieldType) setMinLength(text string) {
-	num, _ := strconv.Atoi(text)
-	f.pgMin = num
-}
-
 func (f *FieldType) setPg(text string) {
 	f.pg = text
-}
-
-func (f *FieldType) setPgVisible(text string) {
-	f.pgVisible = text
 }
 
 func (f *FieldType) setPgReadOnly(read string) error {

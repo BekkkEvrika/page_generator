@@ -83,7 +83,7 @@ func numberView(f *FieldType) *inputs.Input {
 
 func checkBox(f *FieldType) *inputs.Input {
 	in := inputs.Input{
-		Type:        types[4],
+		Type:        types[5],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
 		ReadOnly:    f.PgReadOnly,
@@ -100,16 +100,6 @@ func label(f *FieldType) *inputs.Input {
 		FromName:    f.getFromName(),
 		Placeholder: f.PgText,
 		SearchName:  f.pgSearchObject}
-	return &in
-}
-
-func autoComplete(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[9],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		Placeholder: f.PgText,
-	}
 	return &in
 }
 
