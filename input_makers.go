@@ -29,7 +29,6 @@ func button(f *FieldType) *inputs.Input {
 	in := inputs.Input{
 		Type:        types[5],
 		Name:        f.getName(),
-		Visible:     f.pgVisible,
 		Placeholder: f.PgText,
 	}
 	return &in
@@ -39,7 +38,6 @@ func submit(f *FieldType) *inputs.Input {
 	in := inputs.Input{
 		Type:        types[5],
 		Name:        f.getName(),
-		Visible:     f.pgVisible,
 		Placeholder: f.PgText,
 	}
 	return &in
@@ -53,7 +51,6 @@ func dateTime(f *FieldType) *inputs.Input {
 		ReadOnly:    f.PgReadOnly,
 		Placeholder: f.PgText,
 		Format:      globalDateFormat + " " + globalTimeFormat,
-		Visible:     f.pgVisible,
 		SearchName:  f.pgSearchObject,
 	}
 	return &in
@@ -67,7 +64,6 @@ func dateF(f *FieldType) *inputs.Input {
 		ReadOnly:    f.PgReadOnly,
 		Placeholder: f.PgText,
 		Format:      globalDateFormat,
-		Visible:     f.pgVisible,
 		SearchName:  f.pgSearchObject,
 	}
 	return &in
@@ -80,7 +76,6 @@ func numberView(f *FieldType) *inputs.Input {
 		FromName:    f.getFromName(),
 		ReadOnly:    f.PgReadOnly,
 		Placeholder: f.PgText,
-		Visible:     f.pgVisible,
 		SearchName:  f.pgSearchObject,
 	}
 	return &in
@@ -93,7 +88,6 @@ func checkBox(f *FieldType) *inputs.Input {
 		FromName:    f.getFromName(),
 		ReadOnly:    f.PgReadOnly,
 		SearchName:  f.pgSearchObject,
-		Visible:     f.pgVisible,
 		Placeholder: f.PgText,
 	}
 	return &in
@@ -104,8 +98,6 @@ func label(f *FieldType) *inputs.Input {
 		Type:        types[5],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
-		Visible:     f.pgVisible,
-		Template:    f.pgTemplate,
 		Placeholder: f.PgText,
 		SearchName:  f.pgSearchObject}
 	return &in
@@ -116,8 +108,6 @@ func autoComplete(f *FieldType) *inputs.Input {
 		Type:        types[9],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
-		Visible:     f.pgVisible,
-		Template:    f.pgTemplate,
 		Placeholder: f.PgText,
 	}
 	return &in
@@ -128,10 +118,7 @@ func fileUploader(f *FieldType) *inputs.Input {
 		Type:        types[10],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
-		Visible:     f.pgVisible,
 		Placeholder: f.PgText,
-		FileSource:  f.pgFileSource,
-		FileMaxSize: f.pgFileMaxSize,
 	}
 	return &in
 }
@@ -152,7 +139,6 @@ func searchView(f *FieldType) *inputs.Input {
 		Type:        types[6],
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
-		Visible:     f.pgVisible,
 		Search:      f.pgSearchSource,
 		Placeholder: f.PgText,
 		DataType:    f.pgDataType,
@@ -168,7 +154,6 @@ func textView(f *FieldType) *inputs.Input {
 		ReadOnly:    f.PgReadOnly,
 		Placeholder: f.PgText,
 		SearchName:  f.pgSearchObject,
-		Visible:     f.pgVisible,
 	}
 	return &in
 }
@@ -181,7 +166,6 @@ func textField(f *FieldType) *inputs.Input {
 		ReadOnly:    f.PgReadOnly,
 		Placeholder: f.PgText,
 		SearchName:  f.pgSearchObject,
-		Visible:     f.pgVisible,
 	}
 	return &in
 }
@@ -192,7 +176,6 @@ func comboBox(f *FieldType) *inputs.Input {
 		Name:        f.getName(),
 		FromName:    f.getFromName(),
 		ReadOnly:    f.PgReadOnly,
-		Visible:     f.pgVisible,
 		Placeholder: f.PgText,
 		SearchName:  f.pgSearchObject,
 	}
