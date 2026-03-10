@@ -9,20 +9,23 @@ import (
 )
 
 type UIModel struct {
-	model      interface{}
-	fieldSize  int
-	fieldTypes []*FieldType
-	container  IModel
-	create     ICreate
-	update     IUpdate
-	delete     IDelete
-	def        IDefault
-	combo      IComboBox
-	validation IFormValidation
-	meta       IMetaData
-	createUrl  string
-	updateUrl  string
-	filterUrl  string
+	model        interface{}
+	fieldSize    int
+	fieldTypes   []*FieldType
+	container    IModel
+	create       ICreate
+	update       IUpdate
+	delete       IDelete
+	def          IDefault
+	combo        IComboBox
+	validation   IFormValidation
+	visibility   IFormVisibility
+	fieldActions IFieldActions
+	fileConfig   IFileConfig
+	meta         IMetaData
+	createUrl    string
+	updateUrl    string
+	filterUrl    string
 }
 
 func (model *UIModel) setModel(obj interface{}) error {
@@ -53,8 +56,17 @@ func (model *UIModel) setModel(obj interface{}) error {
 	if val, ok := model.model.(IMetaData); ok {
 		model.meta = val
 	}
-	if val, ok := model.model.(IMetaData); ok {
-		model.meta = val
+	if val, ok := model.model.(IFormValidation); ok {
+		model.validation = val
+	}
+	if val, ok := model.model.(IFormVisibility); ok {
+		model.visibility = val
+	}
+	if val, ok := model.model.(IFieldActions); ok {
+		model.fieldActions = val
+	}
+	if val, ok := model.model.(IFileConfig); ok {
+		model.fileConfig = val
 	}
 	return nil
 }
@@ -72,6 +84,21 @@ func (model *UIModel) enrichInput(inp *inputs.Input, params *QueryParams, md map
 	if model.validation != nil {
 		if valid, ok := model.validation.GetFormValidation()[inp.Name]; ok {
 			inp.Validation = &valid
+		}
+	}
+	if model.visibility != nil {
+		if valid, ok := model.visibility.GetFormValidation()[inp.Name]; ok {
+			inp.VisibilityRules = valid
+		}
+	}
+	if model.fieldActions != nil {
+		if valid, ok := model.fieldActions.GetFieldActions()[inp.Name]; ok {
+			inp.FieldActions = valid
+		}
+	}
+	if model.fileConfig != nil {
+		if valid, ok := model.fileConfig.GetFileConfig()[inp.Name]; ok {
+			inp.FileConfig = &valid
 		}
 	}
 	if model.meta != nil {

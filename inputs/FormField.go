@@ -9,7 +9,7 @@ type FileConfig struct {
 }
 
 type FieldAction struct {
-	When         interface{} `json:"when"`   // VisibilityRule or []VisibilityRule
+	When         Rule        `json:"when"`
 	Action       string      `json:"action"` // "clear" | "setRequired" | "setOptional" | "show" | "hide" | "setValue"
 	TargetFields []string    `json:"targetFields"`
 	Value        interface{} `json:"value,omitempty"`
