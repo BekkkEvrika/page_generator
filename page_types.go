@@ -94,3 +94,7 @@ type IFieldActions interface {
 type IFileConfig interface {
 	GetFileConfig() map[string]inputs.FileConfig // file config uchun
 }
+
+type IFormActions interface {
+	GetFormActions() *[]inputs.FormAction // form action uchun
+}

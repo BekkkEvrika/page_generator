@@ -17,6 +17,7 @@ type UIModel struct {
 	delete       IDelete
 	def          IDefault
 	combo        IComboBox
+	formActions  IFormActions
 	validation   IFormValidation
 	visibility   IFormVisibility
 	fieldActions IFieldActions
@@ -52,6 +53,10 @@ func (model *UIModel) setModel(obj interface{}) error {
 	if val, ok := model.model.(IComboBox); ok {
 		model.combo = val
 	}
+	if val, ok := model.model.(IFormActions); ok {
+		model.formActions = val
+	}
+
 	if val, ok := model.model.(IMetaData); ok {
 		model.meta = val
 	}
@@ -134,6 +139,9 @@ func (model *UIModel) buildPage(params *QueryParams, md map[string]interface{}, 
 				container.Fields = append(container.Fields, *inp)
 			}
 		}
+	}
+	if model.formActions != nil {
+		p.FormActions = model.formActions.GetFormActions()
 	}
 	return &p
 }
