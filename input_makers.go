@@ -26,148 +26,118 @@ func creatorsInit() {
 }
 
 func button(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[11],
-		Name:        f.getName(),
-		Placeholder: f.PgText,
-	}
-	return &in
+	return &inputs.Input{Type: types[11], Name: f.getName()}
 }
 
 func submit(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[12],
-		Name:        f.getName(),
-		Placeholder: f.PgText,
-	}
-	return &in
+	return &inputs.Input{Type: types[12], Name: f.getName()}
 }
 
 func dateTime(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[2],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		ReadOnly:    f.PgReadOnly,
-		Placeholder: f.PgText,
-		Format:      globalDateFormat + " " + globalTimeFormat,
-		SearchName:  f.pgSearchObject,
+	return &inputs.Input{
+		Type:       types[2],
+		Name:       f.getName(),
+		FromName:   f.getFromName(),
+		ReadOnly:   f.PgReadOnly,
+		Format:     globalDateFormat + " " + globalTimeFormat,
+		SearchName: f.pgSearchObject,
 	}
-	return &in
 }
 
 func dateF(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[1],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		ReadOnly:    f.PgReadOnly,
-		Placeholder: f.PgText,
-		Format:      globalDateFormat,
-		SearchName:  f.pgSearchObject,
+	return &inputs.Input{
+		Type:       types[1],
+		Name:       f.getName(),
+		FromName:   f.getFromName(),
+		ReadOnly:   f.PgReadOnly,
+		Format:     globalDateFormat,
+		SearchName: f.pgSearchObject,
 	}
-	return &in
 }
 
 func numberView(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[4],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		ReadOnly:    f.PgReadOnly,
-		Placeholder: f.PgText,
-		SearchName:  f.pgSearchObject,
+	return &inputs.Input{
+		Type:       types[4],
+		Name:       f.getName(),
+		FromName:   f.getFromName(),
+		ReadOnly:   f.PgReadOnly,
+		SearchName: f.pgSearchObject,
 	}
-	return &in
 }
 
 func checkBox(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[5],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		ReadOnly:    f.PgReadOnly,
-		SearchName:  f.pgSearchObject,
-		Placeholder: f.PgText,
+	return &inputs.Input{
+		Type:       types[5],
+		Name:       f.getName(),
+		FromName:   f.getFromName(),
+		ReadOnly:   f.PgReadOnly,
+		SearchName: f.pgSearchObject,
 	}
-	return &in
 }
 
 func label(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[6],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		Placeholder: f.PgText,
-		SearchName:  f.pgSearchObject}
-	return &in
+	return &inputs.Input{
+		Type:       types[6],
+		Name:       f.getName(),
+		FromName:   f.getFromName(),
+		SearchName: f.pgSearchObject,
+	}
 }
 
 func fileUploader(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[10],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		Placeholder: f.PgText,
+	return &inputs.Input{
+		Type:     types[10],
+		Name:     f.getName(),
+		FromName: f.getFromName(),
 	}
-	return &in
 }
 
 func hidden(f *FieldType) *inputs.Input {
-	in := inputs.Input{
+	return &inputs.Input{
 		Type:       types[9],
 		Name:       f.getName(),
 		FromName:   f.getFromName(),
 		DataType:   f.pgDataType,
 		SearchName: f.pgSearchObject,
 	}
-	return &in
 }
 
 func searchView(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[7],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		Search:      f.pgSearchSource,
-		Placeholder: f.PgText,
-		DataType:    f.pgDataType,
+	return &inputs.Input{
+		Type:     types[7],
+		Name:     f.getName(),
+		FromName: f.getFromName(),
+		Search:   f.pgSearchSource,
+		DataType: f.pgDataType,
 	}
-	return &in
 }
 
 func textView(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[3],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		ReadOnly:    f.PgReadOnly,
-		Placeholder: f.PgText,
-		SearchName:  f.pgSearchObject,
+	return &inputs.Input{
+		Type:       types[3],
+		Name:       f.getName(),
+		FromName:   f.getFromName(),
+		ReadOnly:   f.PgReadOnly,
+		SearchName: f.pgSearchObject,
 	}
-	return &in
 }
 
 func textField(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[8],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		ReadOnly:    f.PgReadOnly,
-		Placeholder: f.PgText,
-		SearchName:  f.pgSearchObject,
+	return &inputs.Input{
+		Type:       types[8],
+		Name:       f.getName(),
+		FromName:   f.getFromName(),
+		ReadOnly:   f.PgReadOnly,
+		SearchName: f.pgSearchObject,
 	}
-	return &in
 }
 
 func comboBox(f *FieldType) *inputs.Input {
-	in := inputs.Input{
-		Type:        types[0],
-		Name:        f.getName(),
-		FromName:    f.getFromName(),
-		ReadOnly:    f.PgReadOnly,
-		Placeholder: f.PgText,
-		SearchName:  f.pgSearchObject,
+	return &inputs.Input{
+		Type:       types[0],
+		Name:       f.getName(),
+		FromName:   f.getFromName(),
+		ReadOnly:   f.PgReadOnly,
+		SearchName: f.pgSearchObject,
 	}
-	return &in
 }

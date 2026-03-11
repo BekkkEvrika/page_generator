@@ -123,7 +123,8 @@ func (model *UIModel) buildPage(params *QueryParams, md map[string]interface{}, 
 			continue
 		}
 		inp.Id = inp.Name
-		inp.Label = inp.Placeholder
+		inp.Label = ft.PgText
+		inp.Placeholder = ft.getPlaceholder()
 		model.enrichInput(inp, params, md)
 		if transform != nil {
 			transform(ft, inp)
@@ -187,6 +188,7 @@ func (model *UIModel) getFieldsModel(obj interface{}) error {
 			return err
 		}
 		ft.setPgText(field.Tag.Get(pgText))
+		ft.setPgPlaceholder(field.Tag.Get(pgPlaceholder))
 		if err := ft.setPgReadOnly(field.Tag.Get(pgReadOnly)); err != nil {
 			return err
 		}

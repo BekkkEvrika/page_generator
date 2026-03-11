@@ -13,6 +13,7 @@ const (
 	pg             = "pg"
 	pgType         = "pgType"
 	pgText         = "pgText"
+	pgPlaceholder  = "pgPlaceholder"
 	pgReadOnly     = "pgReadOnly"
 	pgEdit         = "pgEdit"
 	pgFromName     = "pgFromName"

@@ -26,6 +26,7 @@ type FieldType struct {
 	Gorm           string
 	PgType         string
 	PgText         string
+	PgPlaceholder  string
 	PgReadOnly     bool
 	pgEdit         bool
 	pg             string
@@ -38,6 +39,7 @@ type FieldType struct {
 
 func (f *FieldType) init() {
 	f.PgText = ""
+	f.PgPlaceholder = ""
 	f.PgReadOnly = false
 }
 
@@ -138,6 +140,18 @@ func (f *FieldType) setPgEdit(edit string) error {
 
 func (f *FieldType) setPgText(text string) {
 	f.PgText = text
+}
+
+func (f *FieldType) setPgPlaceholder(text string) {
+	f.PgPlaceholder = text
+}
+
+// getPlaceholder возвращает PgPlaceholder если задан, иначе PgText
+func (f *FieldType) getPlaceholder() string {
+	if f.PgPlaceholder != "" {
+		return f.PgPlaceholder
+	}
+	return f.PgText
 }
 
 func (f *FieldType) setPgType(tp string) error {
