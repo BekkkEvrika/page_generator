@@ -9,7 +9,7 @@ type Page struct {
 	Description string               `json:"description"`
 	Form        *inputs.Form         `json:"form"`
 	Card        bool                 `json:"card,omitempty"`
-	FormActions *[]inputs.FormAction `json:"formActions,omitempty"`
+	FormActions *[]inputs.FormAction `json:"actions,omitempty"`
 	DataTable   *inputs.DataTable    `json:"dataTable"`
 }
 
