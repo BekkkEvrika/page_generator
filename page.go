@@ -14,11 +14,13 @@ type Page struct {
 }
 
 func (p *Page) SetSettings(settings *PageSettings) {
-	p.FormId = settings.FormId
-	p.Version = settings.Version
-	p.Title = settings.Title
-	p.Description = settings.Description
-	p.Card = settings.Card
+	if settings != nil {
+		p.FormId = settings.FormId
+		p.Version = settings.Version
+		p.Title = settings.Title
+		p.Description = settings.Description
+		p.Card = settings.Card
+	}
 }
 
 type PageSettings struct {
