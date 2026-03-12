@@ -2,7 +2,7 @@ package page_generator
 
 import "github.com/BekkkEvrika/page_generator/inputs"
 
-var types = []string{"select", "date", "datetime", "text", "number", "checkbox", "label", "search", "textarea", "hidden", "file", "button", "submit"}
+var types = []string{"select", "date", "datetime", "text", "number", "checkbox", "label", "search", "textarea", "hidden", "file", "button"}
 
 type createInput func(f *FieldType) *inputs.Input
 
@@ -22,15 +22,10 @@ func creatorsInit() {
 	inputCreators[types[9]] = hidden
 	inputCreators[types[10]] = fileUploader
 	inputCreators[types[11]] = button
-	inputCreators[types[12]] = submit
 }
 
 func button(f *FieldType) *inputs.Input {
-	return &inputs.Input{Type: types[11], Name: f.getName()}
-}
-
-func submit(f *FieldType) *inputs.Input {
-	return &inputs.Input{Type: types[12], Name: f.getName()}
+	return &inputs.Input{Type: types[11], Name: f.getName(), Variant: f.pgVariant}
 }
 
 func dateTime(f *FieldType) *inputs.Input {

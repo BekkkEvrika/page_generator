@@ -35,6 +35,8 @@ type FieldType struct {
 	pgSearchObject string
 	pgDataType     string
 	pgContainer    string
+	pgVariant      string
+	pgAction       string
 }
 
 func (f *FieldType) init() {

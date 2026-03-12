@@ -117,7 +117,9 @@ func (model *UIModel) enrichInput(inp *inputs.Input, params *QueryParams, md map
 func (model *UIModel) buildPage(params *QueryParams, md map[string]interface{}, accept func(ft *FieldType) bool, transform func(ft *FieldType, inp *inputs.Input)) *Page {
 	p := Page{}
 	p.Form = &inputs.Form{}
+	p.SetSettings(model.container.GetPageSettings())
 	p.Form.Containers = model.container.GetContainers()
+	p.FormActions = model.container.GetActions()
 	for ind := 0; ind < model.fieldSize; ind++ {
 		ft := model.fieldTypes[ind]
 		if !accept(ft) {
@@ -130,12 +132,13 @@ func (model *UIModel) buildPage(params *QueryParams, md map[string]interface{}, 
 		inp.Id = inp.Name
 		inp.Label = ft.PgText
 		inp.Placeholder = ft.getPlaceholder()
+		inp.ActionID = ft.pgAction
 		model.enrichInput(inp, params, md)
 		if transform != nil {
 			transform(ft, inp)
 		}
 		if ft.pgContainer != "" {
-			if container := inputs.GetContainerByKeyInSlice(p.Form.Containers, ft.pgContainer); container != nil {
+			if container := inputs.GetContainerByKeyInSlice(*p.Form.Containers, ft.pgContainer); container != nil {
 				container.Fields = append(container.Fields, *inp)
 			}
 		}
@@ -192,6 +195,8 @@ func (model *UIModel) getFieldsModel(obj interface{}) error {
 		ft.pgSearchSource = field.Tag.Get(pgSearchSource)
 		ft.pgSearchObject = field.Tag.Get(pgSearchObject)
 		ft.pgFromName = field.Tag.Get(pgFromName)
+		ft.pgVariant = field.Tag.Get(pgVariant)
+		ft.pgAction = field.Tag.Get(pgAction)
 		if err := ft.setPgType(field.Tag.Get(pgType)); err != nil {
 			return err
 		}

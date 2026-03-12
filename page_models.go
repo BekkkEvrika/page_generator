@@ -20,6 +20,8 @@ const (
 	pgSearchSource = "pgSearch"
 	pgSearchObject = "pgSName"
 	pgContainer    = "pgContainer"
+	pgVariant      = "pgVariant"
+	pgAction       = "pgAction"
 )
 
 const (

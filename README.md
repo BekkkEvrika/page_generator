@@ -22,13 +22,13 @@ import (
 
 // 1. Модель с тегами
 type UserModel struct {
-    ID   int    `json:"id"   gorm:"primaryKey;autoIncrement" pgType:"number" pgText:"ID"   pgContainer:"main"`
-    Name string `json:"name" gorm:"size:100"                 pgType:"text"   pgText:"Имя"  pgContainer:"main" pgEdit:"true"`
+    ID   int    `json:"id"   gorm:"primaryKey;autoIncrement" pgType:"number" pgText:"ID"  pgContainer:"main"`
+    Name string `json:"name" gorm:"size:100"                 pgType:"text"   pgText:"Имя" pgContainer:"main" pgEdit:"true" pgPlaceholder:"Введите имя"`
 }
 
 // 2. Обязательный интерфейс IModel
-func (u *UserModel) GetContainers() []inputs.Container {
-    return []inputs.Container{
+func (u *UserModel) GetContainers() *[]inputs.Container {
+    return &[]inputs.Container{
         {Key: "main", Direction: "vertical", Title: "Основное"},
     }
 }
@@ -38,6 +38,12 @@ func (u *UserModel) Create(params *pg.QueryParams) error {
     // сохранить в БД
     return nil
 }
+
+func (u *UserModel) GetPageSettings() *pg.PageSettings {
+    return &pg.PageSettings{FormId: "user-form", Version: "1.0", Title: "Пользователь"}
+}
+
+func (u *UserModel) GetActions() *[]inputs.FormAction { return nil }
 
 func main() {
     r := gin.Default()
@@ -56,10 +62,7 @@ func main() {
     if err != nil {
         log.Fatal(err)
     }
-
-    if err := pg.GetModelsRoutes(r); err != nil {
-        log.Fatal(err)
-    }
+    pg.GetModelsRoutes(r)
     r.Run(":8080")
 }
 ```

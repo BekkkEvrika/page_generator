@@ -51,10 +51,6 @@ type IDefault interface {
 	GetDefault(params *QueryParams, mp map[string]interface{}) map[string]string
 }
 
-type IModel interface {
-	GetContainers() []inputs.Container
-}
-
 type IComboBox interface {
 	GetComboItems(params *QueryParams, mp map[string]interface{}) map[string]inputs.ComboItems
 }
@@ -97,4 +93,10 @@ type IFileConfig interface {
 
 type IFormActions interface {
 	GetFormActions() *[]inputs.FormAction // form action uchun
+}
+
+type IModel interface {
+	GetContainers() *[]inputs.Container
+	GetPageSettings() *PageSettings
+	GetActions() *[]inputs.FormAction
 }

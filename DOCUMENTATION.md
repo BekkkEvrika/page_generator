@@ -9,7 +9,7 @@
 1. [Теги полей модели](#теги-полей-модели)
 2. [Типы полей pgType](#типы-полей-pgtype)
 3. [Интерфейсы](#интерфейсы)
-   - [Обязательный](#обязательный)
+   - [Обязательный IModel](#обязательный-imodel)
    - [Для форм](#для-форм)
    - [Для таблиц и списков](#для-таблиц-и-списков)
 4. [Структуры данных](#структуры-данных)
@@ -21,70 +21,101 @@
 
 ## Теги полей модели
 
-| Тег             | Описание                                                     | Значения                 |
-|-----------------|--------------------------------------------------------------|--------------------------|
-| `pg`            | Исключить поле из UI полностью                               | `"-"`                    |
-| `pgType`        | Тип элемента формы                                           | см. [Типы полей](#типы-полей-pgtype) |
-| `pgText`        | Подпись поля (`label`)                                       | любая строка             |
-| `pgPlaceholder` | Placeholder поля. Если не задан — используется `pgText`      | любая строка             |
-| `pgEdit`        | Включить поле в форму редактирования                         | `"true"` / `"false"`     |
-| `pgReadOnly`    | Поле только для чтения                                       | `"true"` / `"false"`     |
-| `pgFromName`    | json-имя поля-источника значения (для связанных полей)       | json-имя поля            |
-| `pgSearch`      | URL источника данных для поля типа `search`                  | URL строка               |
-| `pgSName`       | Имя поля в объекте результата поиска                         | строка                   |
-| `pgContainer`   | Ключ контейнера, в который помещается поле                   | строка — ключ контейнера |
+| Тег              | Описание                                                                    | Значения                     |
+|------------------|-----------------------------------------------------------------------------|------------------------------|
+| `pg`             | Исключить поле из UI полностью                                              | `"-"`                        |
+| `pgType`         | Тип элемента формы                                                          | см. [Типы полей](#типы-полей-pgtype) |
+| `pgText`         | Подпись поля (`label`)                                                      | любая строка                 |
+| `pgPlaceholder`  | Placeholder поля. Если не задан — используется значение `pgText`            | любая строка                 |
+| `pgEdit`         | Включить поле в форму редактирования                                        | `"true"` / `"false"`         |
+| `pgReadOnly`     | Поле только для чтения                                                      | `"true"` / `"false"`         |
+| `pgFromName`     | json-имя поля-источника значения (для связанных полей)                      | json-имя поля                |
+| `pgSearch`       | URL источника данных для поля типа `search`                                 | URL строка                   |
+| `pgSName`        | Имя поля в объекте результата поиска                                        | строка                       |
+| `pgContainer`    | Ключ контейнера (`Container.Key`), в который помещается поле                | строка — ключ контейнера     |
+| `pgVariant`      | Вариант отображения кнопки (`button`)                                       | `"primary"` / `"secondary"` / `"destructive"` / `"outline"` / `"ghost"` / `"link"` |
+| `pgAction`       | ID действия формы (`FormAction.ID`), которое вызывается при клике на кнопку | строка — ID действия         |
 
 > Тег `pg:"-"` полностью исключает поле из всех страниц UI. Это единственное допустимое значение тега `pg`.
 
 Теги для **табличной модели** (`SetTableModel`):
 
-| Тег        | Описание                          |
-|------------|-----------------------------------|
-| `dtTitle`  | Заголовок колонки таблицы         |
-| `dtExport` | Включить в экспорт (`"true"`)     |
-| `dtTemp`   | Шаблон отображения ячейки         |
+| Тег        | Описание                        |
+|------------|---------------------------------|
+| `dtTitle`  | Заголовок колонки таблицы       |
+| `dtExport` | Включить в экспорт (`"true"`)   |
+| `dtTemp`   | Шаблон отображения ячейки       |
 
 ---
 
 ## Типы полей `pgType`
 
-| Значение   | Описание                        | Автоматически назначается для     |
-|------------|---------------------------------|-----------------------------------|
-| `select`   | Выпадающий список               | —                                 |
-| `date`     | Поле даты                       | `DateTime` с gorm `type:date`     |
-| `datetime` | Поле даты и времени             | `DateTime`                        |
-| `text`     | Текстовое поле (однострочное)   | `string` с gorm `size` ≤ 60       |
-| `number`   | Числовое поле                   | числовые типы Go                  |
-| `checkbox` | Флажок                          | `bool`                            |
-| `label`    | Метка (только отображение)      | —                                 |
-| `search`   | Поле поиска со справочником     | —                                 |
-| `textarea` | Текстовое поле (многострочное)  | `string` с gorm `size` > 60       |
-| `hidden`   | Скрытое поле                    | —                                 |
-| `file`     | Загрузка файла                  | —                                 |
-| `button`   | Кнопка                          | —                                 |
-| `submit`   | Кнопка отправки формы           | —                                 |
+| Значение   | Описание                       | Автоматически назначается для  |
+|------------|--------------------------------|-------------------------------|
+| `select`   | Выпадающий список              | —                             |
+| `date`     | Поле даты                      | `DateTime` с gorm `type:date` |
+| `datetime` | Поле даты и времени            | `DateTime`                    |
+| `text`     | Текстовое поле (однострочное)  | `string` с gorm `size` ≤ 60   |
+| `number`   | Числовое поле                  | числовые типы Go              |
+| `checkbox` | Флажок                         | `bool`                        |
+| `label`    | Метка (только отображение)     | —                             |
+| `search`   | Поле поиска со справочником    | —                             |
+| `textarea` | Текстовое поле (многострочное) | `string` с gorm `size` > 60   |
+| `hidden`   | Скрытое поле                   | —                             |
+| `file`     | Загрузка файла                 | —                             |
+| `button`   | Кнопка                         | —                             |
 
 ---
 
 ## Интерфейсы
 
-### Обязательный
+### Обязательный IModel
 
-#### `IModel`
-Обязателен для любой модели формы. Определяет структуру контейнеров.
+Каждая модель формы **обязана** реализовывать `IModel`:
 
 ```go
 type IModel interface {
-    GetContainers() []inputs.Container
+    GetContainers()   *[]inputs.Container
+    GetPageSettings() *PageSettings
+    GetActions()      *[]inputs.FormAction
 }
 ```
 
+| Метод              | Описание                                                       |
+|--------------------|----------------------------------------------------------------|
+| `GetContainers()`  | Возвращает структуру контейнеров формы                         |
+| `GetPageSettings()`| Возвращает настройки страницы (FormId, Version, Title и др.)   |
+| `GetActions()`     | Возвращает список действий формы. Если не нужно — вернуть `nil`|
+
 Пример:
 ```go
-func (m *MyModel) GetContainers() []inputs.Container {
-    return []inputs.Container{
-        {Key: "main",    Direction: "vertical",   Title: "Основное"},
-        {Key: "details", Direction: "horizontal", Title: "Детали"},
+func (m *MyModel) GetContainers() *[]inputs.Container {
+    return &[]inputs.Container{
+        {Key: "main",   Direction: "vertical",   Title: "Основное"},
+        {Key: "extra",  Direction: "horizontal",  Title: "Дополнительно",
+            Containers: []inputs.Container{
+                {Key: "nested", Direction: "vertical"},
+            },
+        },
+    }
+}
+
+func (m *MyModel) GetPageSettings() *PageSettings {
+    return &PageSettings{
+        FormId:  "my-form",
+        Version: "1.0",
+        Title:   "Моя форма",
+        Card:    true,
+    }
+}
+
+func (m *MyModel) GetActions() *[]inputs.FormAction {
+    return &[]inputs.FormAction{
+        {
+            ID:      "save-action",
+            Trigger: inputs.Click,
+            Config:  &inputs.FormActionConfig{Type: inputs.APICall, URL: "/api/save", Method: "POST"},
+        },
     }
 }
 ```
@@ -208,7 +239,29 @@ func (m *MyModel) GetFieldActions() map[string][]inputs.FieldAction {
     }
 }
 ```
-Значения `Action`: `"clear"` | `"setRequired"` | `"setOptional"` | `"show"` | `"hide"` | `"setValue"`
+Допустимые значения `Action`: `"clear"` | `"setRequired"` | `"setOptional"` | `"show"` | `"hide"` | `"setValue"`
+
+#### `IFormActions`
+Действия формы (вызываются по событию — `init`, `change`, `click`).
+```go
+type IFormActions interface {
+    GetFormActions() *[]inputs.FormAction
+}
+```
+Пример:
+```go
+func (m *MyModel) GetFormActions() *[]inputs.FormAction {
+    return &[]inputs.FormAction{
+        {
+            ID:      "load-data",
+            Trigger: inputs.Init,
+            Config:  &inputs.FormActionConfig{Type: inputs.APICall, URL: "/api/data", Method: "GET"},
+        },
+    }
+}
+```
+
+> `IFormActions` имеет приоритет над `GetActions()` из `IModel` — если модель реализовывает `IFormActions`, используется его результат.
 
 #### `IFileConfig`
 Конфигурация загрузки файлов для полей типа `file`.
@@ -232,7 +285,6 @@ func (m *MyModel) GetFileConfig() map[string]inputs.FileConfig {
 type IMetaData interface {
     GetMetaData() map[string]MetaData
 }
-// MetaData — ключ и значение для справочника поля search
 type MetaData struct {
     MetaKey  string
     MetaData string
@@ -314,19 +366,32 @@ type IQueryParams interface {
 ### `Page`
 ```go
 type Page struct {
-    FormId      string            `json:"formId"`
-    Version     string            `json:"version"`
-    Title       string            `json:"title"`
-    Description string            `json:"description"`
-    Form        *inputs.Form      `json:"form"`
-    DataTable   *inputs.DataTable `json:"dataTable"`
+    FormId      string               `json:"formId"`
+    Version     string               `json:"version"`
+    Title       string               `json:"title"`
+    Description string               `json:"description"`
+    Card        bool                 `json:"card,omitempty"`
+    Form        *inputs.Form         `json:"form"`
+    FormActions *[]inputs.FormAction `json:"formActions,omitempty"`
+    DataTable   *inputs.DataTable    `json:"dataTable"`
+}
+```
+
+### `PageSettings`
+```go
+type PageSettings struct {
+    FormId      string `json:"formId"`
+    Version     string `json:"version"`
+    Title       string `json:"title"`
+    Description string `json:"description"`
+    Card        bool   `json:"card,omitempty"`
 }
 ```
 
 ### `Form`
 ```go
 type Form struct {
-    Containers []Container `json:"containers"`
+    Containers *[]Container `json:"containers"`
 }
 ```
 
@@ -336,6 +401,7 @@ type Container struct {
     Key            string      `json:"id"`
     Direction      string      `json:"direction"`            // "horizontal" | "vertical"
     Gap            int         `json:"gap"`
+    Card           bool        `json:"card,omitempty"`
     Align          string      `json:"align"`                // "start"|"center"|"end"|"between"|"stretch"
     GridColumns    int         `json:"gridColumns,omitempty"`
     Title          string      `json:"title"`
@@ -352,6 +418,8 @@ type Input struct {
     Type            string           `json:"type"`
     Name            string           `json:"name,omitempty"`
     Label           string           `json:"label,omitempty"`
+    ActionID        string           `json:"actionId,omitempty"`
+    Variant         string           `json:"variant,omitempty"`    // для button: "primary"|"secondary"|"destructive"|"outline"|"ghost"|"link"
     FromName        string           `json:"fromName,omitempty"`
     ReadOnly        bool             `json:"readOnly,omitempty"`
     Placeholder     string           `json:"placeholder,omitempty"`
@@ -369,6 +437,23 @@ type Input struct {
     SearchName      string           `json:"searchObject,omitempty"`
     MetaData        string           `json:"metaData,omitempty"`
     MetaKey         string           `json:"metaKey,omitempty"`
+}
+```
+
+### `FormAction`
+```go
+type FormAction struct {
+    ID      string            `json:"id"`
+    Trigger FormActionTrigger `json:"trigger"` // "init" | "change" | "click"
+    Config  *FormActionConfig `json:"config,omitempty"`
+}
+
+type FormActionConfig struct {
+    Type           FormActionType `json:"type"`    // "apiCall" | "changeApiCall" | "calculate"
+    URL            string         `json:"url,omitempty"`
+    Method         string         `json:"method,omitempty"` // GET, POST, PUT, DELETE
+    Formula        string         `json:"formula,omitempty"`
+    SuccessMessage string         `json:"successMessage,omitempty"`
 }
 ```
 
@@ -465,17 +550,17 @@ r.Run(":8080")
 
 Автоматически регистрируемые маршруты для ключа `"users"`:
 
-| Метод    | Маршрут                   | Условие            | Описание                              |
-|----------|---------------------------|--------------------|---------------------------------------|
-| `GET`    | `/users/list/page`        | `SetListModel`     | Структура страницы списка             |
-| `GET`    | `/users/list/table`       | `SetListModel`     | Только структура таблицы              |
-| `GET`    | `/users/list/data`        | `SetListModel`     | Данные списка                         |
-| `GET`    | `/users/list/count`       | `IPagination`      | Количество записей                    |
-| `POST`   | `/users/list/filter`      | `SetFilterModel`   | Данные списка с фильтром              |
-| `GET`    | `/users/create/page`      | `ICreate`          | Структура формы создания              |
-| `POST`   | `/users/create/page`      | `ICreate`          | Структура формы создания (с данными)  |
-| `POST`   | `/users/create/data`      | `ICreate`          | Сохранить новую запись                |
-| `GET`    | `/users/update/page`      | `IUpdate`          | Структура формы редактирования        |
-| `POST`   | `/users/update/page`      | `IUpdate`          | Структура формы редактирования        |
-| `PUT`    | `/users/update/data`      | `IUpdate`          | Сохранить изменения                   |
-| `DELETE` | `/users/delete/data`      | `IDelete`          | Удалить запись                        |
+| Метод    | Маршрут               | Условие          | Описание                             |
+|----------|-----------------------|------------------|--------------------------------------|
+| `GET`    | `/users/list/page`    | `SetListModel`   | Структура страницы списка            |
+| `GET`    | `/users/list/table`   | `SetListModel`   | Только структура таблицы             |
+| `GET`    | `/users/list/data`    | `SetListModel`   | Данные списка                        |
+| `GET`    | `/users/list/count`   | `IPagination`    | Количество записей                   |
+| `POST`   | `/users/list/filter`  | `SetFilterModel` | Данные списка с фильтром             |
+| `GET`    | `/users/create/page`  | `ICreate`        | Структура формы создания             |
+| `POST`   | `/users/create/page`  | `ICreate`        | Структура формы создания (с данными) |
+| `POST`   | `/users/create/data`  | `ICreate`        | Сохранить новую запись               |
+| `GET`    | `/users/update/page`  | `IUpdate`        | Структура формы редактирования       |
+| `POST`   | `/users/update/page`  | `IUpdate`        | Структура формы редактирования       |
+| `PUT`    | `/users/update/data`  | `IUpdate`        | Сохранить изменения                  |
+| `DELETE` | `/users/delete/data`  | `IDelete`        | Удалить запись                       |

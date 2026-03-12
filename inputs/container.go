@@ -4,7 +4,8 @@ type Container struct {
 	Key            string      `json:"id"`
 	Direction      string      `json:"direction"` // horizontal, vertical
 	Gap            int         `json:"gap"`       //
-	Align          string      `json:"align"`     // "start" | "center" | "end" | "between" - оба стороны | "stretch" - растянуть по всей высоте
+	Card           bool        `json:"card,omitempty"`
+	Align          string      `json:"align"` // "start" | "center" | "end" | "between" - оба стороны | "stretch" - растянуть по всей высоте
 	GridColumns    int         `json:"gridColumns,omitempty"`
 	Title          string      `json:"title"`
 	Fields         []Input     `json:"fields,omitempty"`

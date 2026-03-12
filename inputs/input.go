@@ -5,6 +5,8 @@ type Input struct {
 	Type            string           `json:"type"`
 	Name            string           `json:"name,omitempty"`
 	Label           string           `json:"label,omitempty"`
+	ActionID        string           `json:"actionId,omitempty"`
+	Variant         string           `json:"variant,omitempty"` // button uchun: 'primary' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'
 	FromName        string           `json:"fromName,omitempty"`
 	ReadOnly        bool             `json:"readOnly,omitempty"`
 	Placeholder     string           `json:"placeholder,omitempty"`
